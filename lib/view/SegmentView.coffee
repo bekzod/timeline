@@ -2,51 +2,51 @@ define ['../Utils','moment','backbone','jqueryui'],(Utils,moment)->
 	
 	SegmentView=Backbone.View.extend
 		
-		tagName   :'div'
 		className :'segmentview'
 		template  :_.template('''
 
 		''')
 
 		events:
-			'resize':'onResize'
-			'drag':'onDrag'
-			'mousedown':'onMouseDown'
+			drag      : 'onDrag'
+			resize    : 'onResize'
+			mousedown : 'onMouseDown'
 		
 		initialize:(options)->
 			@secondsInPixels = options.secondsInPixels				
 
-			parent = options.parent;
-			parent.on('relayout',@relayout)
-			@model.on('change:selected',@onSelectedChange,@)
-			@model.on('change:startDate change:playDuration',@onDatesChanges)
+			parent = options.parent 
+
+			parent.on 'relayout',@relayout,@
+			@model.on 'change:selected',@onSelectedChange,@
+			@model.on 'change:startDate change:playDuration',@onDatesChanges
 		
 		onMouseDown:->
 			@model.select();
 
 		onSelectedChange:(model,value)->
 			if(value)
-				@select();
+				@select()
 			else
-				@deselect();
+				@deselect()
 		
 		onDatesChanges:=>
 			if not @model.get('selected')
 				@relayout(@secondsInPixels);
 
-			startTime=new Date(@model.get('startDate'));
-			endTime=new Date(@model.get('playDuration')+startTime)
+			startTime = new Date(@model.get('startDate'));
+			endTime   = new Date(@model.get('playDuration')+startTime)
 
-			time=Utils.secondsToTime @model.startDate
+			time = Utils.secondsToTime @model.startDate
 
-			h=Utils.appendZero(startTime.getHours())
-			m=Utils.appendZero(startTime.getMinutes())
-			s=Utils.appendZero(startTime.getSeconds())
+			h = Utils.appendZero(startTime.getHours())
+			m = Utils.appendZero(startTime.getMinutes())
+			s = Utils.appendZero(startTime.getSeconds())
 			@$startDatePanel.text(" "+h+":"+m+":"+s);
 
-			h=Utils.appendZero(endTime.getHours())
-			m=Utils.appendZero(endTime.getMinutes())
-			s=Utils.appendZero(endTime.getSeconds())
+			h = Utils.appendZero(endTime.getHours())
+			m = Utils.appendZero(endTime.getMinutes())
+			s = Utils.appendZero(endTime.getSeconds())
 			@$endDatePanel.text(" "+h+":"+m+":"+s)
 			
 		
