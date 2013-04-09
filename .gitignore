@@ -1,6 +1,6 @@
-./components
-./images
+components/
+images/
 *.js
 .DS_Store
 *.sublime-project
-*.sublime-workplace
+*.sublime-workspace
