@@ -47,9 +47,10 @@ define [
 
 		init:()->
 			_.bindAll(@)
-			@collection=new SegmentCollection()
-			@timeline=new TimeLineView({collection:@collection}).render()
-			$template=$(@template)
+			@collection = new SegmentCollection()
+			@timeline   = new TimeLineView({collection:@collection}).render()
+			
+			$template   = $(@template)
 
 			$template.find('#segmentdetailcontainer').html(new SegmentDetailView().render().el)
 			$template.find('#timelineconatiner').html(@timeline.el);
@@ -67,12 +68,10 @@ define [
 			$('body').html($template);
 
 		onAddSegment:(e)->
-			seg=new Segment(
-				startDate:Date.now()
-				playDuration:500*60*60
-				totalDuration:1000*60*60
-			)
-			@collection.add(seg)
+			@collection.add (new Segment(
+				startDate     :Date.now()
+				playDuration  :500*60*60
+				totalDuration :1000*60*60))
 
 		onZoomOut:(e)->
 			@timeline.zoomOut()
@@ -83,11 +82,9 @@ define [
 		onLeftBtnClick:(e)->
 			@timeline.$el.parent().animate(
 				scrollLeft:'-=100'
-				,200
-			)
+				200)
 
 		onRightBtnClick:(e)->
 			@timeline.$el.parent().animate(
 				scrollLeft:'+=100'
-				,200
-			)
+				200)

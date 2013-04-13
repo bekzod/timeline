@@ -25,7 +25,7 @@ define ['../Utils','moment','backbone','jqueryui'],(Utils,moment)->
 			@model.select();
 
 		onSelectedChange:(model,value)->
-			if(value)
+			if value
 				@select()
 			else
 				@deselect()
@@ -50,15 +50,14 @@ define ['../Utils','moment','backbone','jqueryui'],(Utils,moment)->
 			@$endDatePanel.text(" "+h+":"+m+":"+s)
 			
 		
-		relayout:(@secondsInPixels)=>
-			width=@model.get('playDuration')/1000*@secondsInPixels
-			maxWidth=@model.get('totalDuration')/1000*@secondsInPixels
-			startDate=new Date @model.get('startDate')
-			startOfset=startDate.getHours()*@secondsInPixels*60*60+startDate.getMinutes()*@secondsInPixels*60+startDate.getSeconds()*@secondsInPixels
+		relayout:(@secondsInPixels)->
+			width      = @model.get('playDuration')/1000*@secondsInPixels
+			maxWidth   = @model.get('totalDuration')/1000*@secondsInPixels
+			startDate  = new Date @model.get('startDate')
+			startOfset = startDate.getHours()*@secondsInPixels*60*60+startDate.getMinutes()*@secondsInPixels*60+startDate.getSeconds()*@secondsInPixels
 			
-			tag=@$el;
-			tag.resizable('option','maxWidth',maxWidth);
-			tag.animate(
+			@$el.resizable('option','maxWidth',maxWidth)
+				.animate(
 					width:width
 					left:startOfset
 					,200
@@ -71,15 +70,14 @@ define ['../Utils','moment','backbone','jqueryui'],(Utils,moment)->
 		
 		
 		deselect:->
-			@$startDatePanel.hide 200 ;
-			@$endDatePanel.hide 200 ;
+			@$startDatePanel.hide 200 
+			@$endDatePanel.hide 200 
 			@$el.removeClass 'selectedSegment'
 
 			
 		onDrag:->
-			time=moment(@$el.position().left/@secondsInPixels)
-			
-			newDate=moment(@model.get('startDate'))
+			time    = moment(@$el.position().left/@secondsInPixels)
+			newDate = moment(@model.get('startDate'))
 			newDate.hours(time.hours());
 			newDate.minutes(time.minutes());
 			newDate.seconds(time.seconds());
@@ -95,13 +93,13 @@ define ['../Utils','moment','backbone','jqueryui'],(Utils,moment)->
 			@onDrag()
 		
 		render:->
-			tag=@$el
-			width=@model.get('playDuration')/1000*@secondsInPixels
-			maxWidth=@model.get('totalDuration')/1000*@secondsInPixels
-			startDate=new Date(@model.get('startDate'))
-			startOfset=(startDate.getHours()*60*60+startDate.getMinutes()*60+startDate.getSeconds())*@secondsInPixels
+			tag        = @$el
+			width      = @model.get('playDuration')/1000*@secondsInPixels
+			maxWidth   = @model.get('totalDuration')/1000*@secondsInPixels
+			startDate  = new Date(@model.get('startDate'))
+			startOfset = (startDate.getHours()*60*60+startDate.getMinutes()*60+startDate.getSeconds())*@secondsInPixels
 
-			color=Utils.generateColor()	
+			color = Utils.generateColor()	
 			dragableOptions=
 				axis: 'x'
 				containment: 'parent'

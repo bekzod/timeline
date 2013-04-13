@@ -1,8 +1,8 @@
 require.config 
 	shim:
     	backbone:
-    		deps    : ['jquery','underscore']
     		exports : 'Backbone'
+    		deps    : ['jquery','underscore']
     	underscore: 
     		exports : '_'
     	jqueryui:
@@ -16,6 +16,7 @@ require.config
 		socketio           : "components/socket.io-client/lib/socket.io-client"
 		jqueryui           : "components/jquery-ui/ui/jquery-ui.custom"
 
-require ['./lib/app','underscore'],(app)->
+
+require ['./lib/app','underscore','backbone'],(app)->
 	_.templateSettings = interpolate : /\{\{(.+?)\}\}/g
 	app.init()
