@@ -1,27 +1,8 @@
 define ['../model/Segment','backbone'],(Segment)->
 
-	SegmentCollection=Backbone.Collection.extend
-			url:'/api/segment/123456'
+	SegmentCollection = Backbone.Collection.extend
+			url:'http://127.0.0.1:8080/player/segment/517406256f81af0000000002'
 			model:Segment
 
-			initialize:->
-				@currentlySelected=null
-				@on('change:startDate',@onStartDateChange)
-
-			onSegmentSelectChange:(model)->
-				if(@currentlySelected is not model)
-					if(@currentlySelected)
-						@currentlySelected.deselect();
-					@currentlySelected=model;
-					# @trigger('selected',model)
-
-			onStartDateChange:->
-				@sort();
-
-			comparator:(model)->
-				model.get('startDate')
-
-			parse:(resp, xhr)->
-				@header = resp.header;
-				@stats = resp.stats;
-				resp.result
+			parse:(res)->
+				res.result

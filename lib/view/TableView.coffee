@@ -25,7 +25,7 @@ define ['./RowView','backbone'],(RowView)->
 			@addOne(model)
 
 		addOne:(model)->
-			row=new RowView({model:model}).render()
+			row = new RowView( model:model ).render()
 			@$body.append(row.el)
 
 		addCollection:(collection)->
