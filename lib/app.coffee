@@ -1,90 +1,58 @@
 define [
-	"./collection/SegmentCollection"
-	"./view/TimeLineView"
-	"./view/TableView"
-	"./view/SegmentDetailView"
-	"./model/Segment"
-	'jquery'
-	]
-	,(SegmentCollection,TimeLineView,TableView,SegmentDetailView,Segment)->
-		template:"""
-			<div class="container">	
+	"jquery"
+	"underscore"
+	"backbone"
+	"handlebars"
+	"layoutmanager"
+],()->
 
-				<legend>Video Management System</legend>	
-				<div id="tablecontainer"  class='navbar-inner span4'></div>	
+	app =
+		root: "/"
+
+	JST = window.JST = window.JST || {};
+	
+	Backbone.Layout.configure({
+		manage: true
 				
-				<div id='segmentdetailcontainer' class="span5"></div>
+		fetch:(path)->
+				path = path + ".html"
+				done = null
+				if !JST[path]
+					done = @async()
+					return $.ajax({ url: app.root + path }).then (contents)->
+						JST[path] = Handlebars.compile(contents)
+						JST[path].__compiled__ = true
+						done(JST[path])
+
+				if !JST[path].__compiled__
+					JST[path] = Handlebars.template(JST[path])
+					JST[path].__compiled__ = true
 				
-				<div class="span12" style="margin-bottom: 10px"></div>
+				JST[path]
+	})
 
-				<div class="row">
-					<div class="span6 offset1">
-						<a id='addSegment' class="btn"><i class="icon-plus"></i> Add Segmnet</a>
-						<a class="btn" id='zoomout'><i class="icon-zoom-out"></i></a>
-						<a class="btn" id="zoomin"><i class="icon-zoom-in"></i></a>
-					</div>
-				</div>
+	_.extend(app,{
+		module: (additionalProps)->
+			_.extend({ Views: {} }, additionalProps)
 
-				<div class="span12" style="margin-bottom:10px"></div>
-				
-				<div class="row">
-					<div class="span1" style="text-align: center; height:100%;">
-						<a class="btn" id='left'><i class="icon-chevron-left"></i></a>
-					</div>
-					
-					<div class="span10">
-						<div id="timelineconatiner" class="timelineConatiner"></div>
-					</div>
-					
-					<div class="span1" style="text-align: center; height:100%;">
-						<a class="btn" id="right"><i class="icon-chevron-right"></i></a>
-					</div>
-				</div>
-
-				<div class="span12" style="margin-bottom: 50px"></div>
-			</div>	
-			"""
-
-		init:()->
-			_.bindAll(@)
-			@collection = new SegmentCollection()
-			@timeline   = new TimeLineView({collection:@collection}).render()
+		useLayout:(name, options)->
+			if @layout && @layout.options.template == name
+				return @layout
 			
-			$template   = $(@template)
+			if @layout then @layout.remove()
 
-			$template.find('#segmentdetailcontainer').html(new SegmentDetailView().render().el)
-			$template.find('#timelineconatiner').html(@timeline.el);
-			$template.find('#tablecontainer').html(new TableView({collection:@collection}).render().el);
-			
+			layout = new Backbone.Layout(
+				_.extend(
+						template: name
+						className: "layout " + name
+						id: "layout"
+				,options)
+			)
 
-			$template.find('a#addSegment').on('click',@onAddSegment)
+			$("#main").empty().append(layout.el)
+			layout.render()
+			@layout = layout
+			layout
+	}, Backbone.Events)
 
-			$template.find('a#left').on('click',@onLeftBtnClick)
-			$template.find('a#right').on('click',@onRightBtnClick)
-			
-			$template.find('a#zoomin').on('click',@onZoomIn)
-			$template.find('a#zoomout').on('click',@onZoomOut)
-
-			$('body').html($template);
-
-		onAddSegment:(e)->
-			@collection.add (new Segment(
-				startDate     :Date.now()
-				playDuration  :500*60*60
-				totalDuration :1000*60*60))
-
-		onZoomOut:(e)->
-			@timeline.zoomOut()
-
-		onZoomIn:(e)->
-			@timeline.zoomIn()
-
-		onLeftBtnClick:(e)->
-			@timeline.$el.parent().animate(
-				scrollLeft:'-=100'
-				200)
-
-		onRightBtnClick:(e)->
-			@timeline.$el.parent().animate(
-				scrollLeft:'+=100'
-				200)
+	

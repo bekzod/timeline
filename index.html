@@ -1,82 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 	<title></title>
 	
-	<link rel="stylesheet" type="text/css" href="components/bootstrap/docs/assets/css/bootstrap.css"/>
-	<link rel="stylesheet" type="text/css" href="components/bootstrap/docs/assets/js/bootstrap.js"/>
+	<link rel="stylesheet" type="text/css" href="./components/bootstrap/docs/assets/css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="./app/style/index.css">
+
+    <script data-main="lib/main" src="./components/requirejs/require.js"></script>
 	
-	<!-- <link rel="stylesheet" type="text/css" href=""/> -->
-    <script data-main="main" src="components/requirejs/require.js"></script>            
-	<style type="text/css">
-	
-	body{
-		background-image: url(./images/background.png);
-		background-repeat: true;
-	}
-	.timelineConatiner{
-		overflow: auto;
-		overflow-y: hidden;
-		width: 100%;
-	}
-
-	.timeline{
-		background-color: #cccccc;
-		position: relative;
-		height: 200px;
-
-	}
-
-	.timeline_overlay{
-		background-image: url(./images/line3.png);
-		background-repeat: repeat-x;
-		background-position: 0px 40px;
-		height: 100%;
-		width:100%;
-		position: absolute; 
-	}
-
-	.timeline_redline{
-		background-color: #ff0000;
-		width: 100%;
-		height: 100%;
-		background-color:#333333;
-		opacity: .7;
-	}
-
-	.timeline_container{
-		height: 100%;
-		width: 100%;
-		position: absolute; 
-		z-index: 200;
-	}
-
-	.selectedRow{
-		background-color: red
-	}
-	.rowview_selected{
-		background-color: #ffaaff;
-	}
-
-	.segmentview{
-		position:absolute;
-		height:100%;
-	}
-
-	.timePicker tr td{
-		text-align:center
-	}
-	.timePicker tr td input{
-		text-align:center
-	}
-
-	.tableview thead { display:block; margin:0px; cell-spacing:0px; left:0px; }
-	.tableview tbody { display:block; overflow:auto; height:300px; }
-	.tableview th { height:20px; width:80px; }
-	.tableview td { height:20px; width:80px;margin:0px; cell-spacing:0px;}
-
-	</style>
 </head>
 <body>
+	<div id="main"></div>
 </body>
 </html>

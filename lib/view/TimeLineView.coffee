@@ -1,96 +1,81 @@
-define ['./SegmentView','../Utils'],(SegmentView,Utils)->
-	
+define [
+	'./SegmentView'
+	'moment'
+	'App'
+],(SegmentView,moment,app)->
 
 	MAX_ZOOM = 11520
 	MIN_ZOOM = 1440
 
 	INTIAL_AMOUNT = 1440
-	ZOOM_AMOUNT = 60*9
-	
+	ZOOM_AMOUNT   = 200
+
 	TimeLineView = Backbone.View.extend
-		className:'timeline'
-		
-		events:
-			"mousedown .segmentview":"onDown"
-			"reset":'render'
+		template:'app/template/timeline'
+		className:'timelineview'
 
-		initialize:->
- 			@width = INTIAL_AMOUNT
- 			@secondsInPixel = @width/24/60/60
- 			@collection.on 'add',$.proxy(@collectionAdd,@)
+		events:{
+			'click #left'    : 'onLeft'
+			'click #right'   : 'onRight'
+			'click #zoomin'  : 'onZoomIn'
+			'click #zoomout' : 'onZoomOut'
+		}
 
-		onDown:(e)->
-			@$container.children().css('z-index':100)
-			$(e.currentTarget).css('z-index':200) 
+		initialize:(opts)->
+			@width = INTIAL_AMOUNT
+			app.globals.TIMELINE_WIDTH = @width
 
-		collectionAdd:(seg)->
-			segView = new SegmentView {model:seg,parent:@,secondsInPixels:@secondsInPixel}
-			@$container.append(segView.render().el);
-		
-		zoomIn:->
-			newWidth = @width + ZOOM_AMOUNT
-			if newWidth < MAX_ZOOM
-				@width = newWidth 
-				@relayout()
+			@collection.bind('add',@onSegmentAdd,@)
 
-		zoomOut:->
-			newWidth = @width - ZOOM_AMOUNT
-			if newWidth > MIN_ZOOM
-				@width = newWidth
-				@relayout()
+		serialize:()->
+			times = []
+			timecount      = Math.floor @width/120
+			secondsInPixel = @width/(24*60*60)
 
-		relayout:->
-			@secondsInPixel = @width/24/60/60
-			@trigger('relayout',[@secondsInPixel]);
-			newWidth = @width
-			@$el.width(@width)
-			@makeTimeLine()
-
-		moveRedLine:->
-			now    = new Date()
-			time   = now.getHours()*60*60+now.getMinutes()*60+now.getSeconds();
-			offset = @secondsInPixel*time
-			@$redLine.width(offset) if @$redLine
-			setTimeout @moveRedLine,100
-
-		makeTimeLine:->
-			@$overlay.empty()
-			timecount = Math.floor(@width/120)
-			while(timecount--)
+			while timecount--
 				offset = timecount*120
-				time = Utils.secondsToTime(offset/@secondsInPixel)
-				formatedTime = time.h+':'+time.m+':'+time.s;
-				
-				tag = $("<div>#{formatedTime}</div>")
-				tag.css( position:'absolute' )
-				tag.offset( {top:20,left:offset-27} )
-				
-				@$overlay.append(tag);
+				time   = moment().startOf('day').seconds(offset/secondsInPixel).format("HH:mm:ss")
+				times.unshift { time }
+			
+			times:times
+			width:@width
 
-		render:->
-			tag = @$el;
-			tag.empty();
-			@$redLine   = $('<div class="timeline_redline">') 
-			@$overlay   = $('<div class="timeline_overlay" >')
-			@$container = $('<div class="timeline_container">')
+		afterRender:->
+			@collection.models.forEach (seg)=>
+				@onSegmentAdd seg
 
-			line = $('<div>')
-			.css(
-				float :"right"
-				height:"100%"
-				width :"2px"
-				"background-color":'#ff0000'
+		onZoomOut:()-> 
+			newWidth = @width - ZOOM_AMOUNT
+			@setNewWidth(newWidth)
+
+		onZoomIn:()->
+			newWidth = @width + ZOOM_AMOUNT
+			@setNewWidth(newWidth)
+
+		onLeft:()->
+			cont = @$el.find('.timeline_container')
+			newScrollValue = cont.scrollLeft()-80
+			cont.clearQueue().animate(scrollLeft:newScrollValue)
+
+		onRight:()->
+			cont = @$el.find('.timeline_container')
+			newScrollValue = cont.scrollLeft()+80
+			cont.clearQueue().animate(scrollLeft:newScrollValue)
+
+		setNewWidth:(newWidth)->
+			if newWidth < MIN_ZOOM || newWidth > MAX_ZOOM then return
+			ratio = @$el.find('.timeline_background').position().left/@width
+			@width = newWidth
+			app.globals.TIMELINE_WIDTH = @width
+			@render()
+			@$el.find('.timeline_container').scrollLeft(-@width*ratio)			
+
+		onSegmentAdd:(model)->
+
+			seg = new SegmentView( 
+				model:model
+				template:'app/template/segment_timeline'
 			)
 
-			@$redLine.append(line)
-
-			@collection.each (seg) => @collectionAdd(seg)
-
-			tag.append @$container 
-			tag.append @$overlay 
-			tag.append @$redLine 
-			tag.width  @width
-
-			@makeTimeLine()
-			@moveRedLine()
-			@
+			@insertView('.timeline_segment_container',seg)
+			seg.render();

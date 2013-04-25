@@ -1,4 +1,7 @@
-define ['../Utils','backbone'],(Utils)->
+define [
+	'backbone'
+	'moment'
+],()->
 	
 	Segment = Backbone.Model.extend
 		idAttribute: "_id"
