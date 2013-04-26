@@ -8,26 +8,28 @@ define [
 	MIN_ZOOM = 1440
 
 	INTIAL_AMOUNT = 1440
-	ZOOM_AMOUNT   = 200
+	ZOOM_AMOUNT   = 240
 
 	TimeLineView = Backbone.View.extend
 		template:'app/template/timeline'
-		className:'timelineview'
 
 		events:{
-			'click #left'    : 'onLeft'
-			'click #right'   : 'onRight'
-			'click #zoomin'  : 'onZoomIn'
-			'click #zoomout' : 'onZoomOut'
+			'click #left'         : 'onLeft'
+			'click #right'        : 'onRight'
+			'click #zoomin'       : 'onZoomIn'
+			'click #zoomout'      : 'onZoomOut'
 		}
 
 		initialize:(opts)->
 			@width = INTIAL_AMOUNT
 			app.globals.TIMELINE_WIDTH = @width
+			@collection.on 'add',@onSegmentAdd,@
+			@collection.on 'segment_select',@onSegmentSelect,@
 
-			@collection.bind('add',@onSegmentAdd,@)
+		onSegmentSelect:->
+			
 
-		serialize:()->
+		serialize:->
 			times = []
 			timecount      = Math.floor @width/120
 			secondsInPixel = @width/(24*60*60)
@@ -43,21 +45,29 @@ define [
 		afterRender:->
 			@collection.models.forEach (seg)=>
 				@onSegmentAdd seg
+			clearTimeout(@timerId)
+			@timerId = setTimeout(_.bind(@moveTimeBox,@),.5)
 
-		onZoomOut:()-> 
+
+		moveTimeBox:-> 
+			d = new Date()
+			boxWidth = @width * ((d.getHours()*60*60 + d.getMinutes()*60+d.getSeconds())/(24*60*60))
+			@$el.find('.timebox').width boxWidth
+
+		onZoomOut:->
 			newWidth = @width - ZOOM_AMOUNT
 			@setNewWidth(newWidth)
 
-		onZoomIn:()->
+		onZoomIn:->
 			newWidth = @width + ZOOM_AMOUNT
 			@setNewWidth(newWidth)
 
-		onLeft:()->
+		onLeft:->
 			cont = @$el.find('.timeline_container')
 			newScrollValue = cont.scrollLeft()-80
 			cont.clearQueue().animate(scrollLeft:newScrollValue)
 
-		onRight:()->
+		onRight:->
 			cont = @$el.find('.timeline_container')
 			newScrollValue = cont.scrollLeft()+80
 			cont.clearQueue().animate(scrollLeft:newScrollValue)
@@ -68,14 +78,10 @@ define [
 			@width = newWidth
 			app.globals.TIMELINE_WIDTH = @width
 			@render()
-			@$el.find('.timeline_container').scrollLeft(-@width*ratio)			
+			@$el.find('.timeline_container').scrollLeft(-@width*ratio)
+
 
 		onSegmentAdd:(model)->
-
-			seg = new SegmentView( 
-				model:model
-				template:'app/template/segment_timeline'
-			)
-
+			seg = new SegmentView( model:model)
 			@insertView('.timeline_segment_container',seg)
 			seg.render();

@@ -10,6 +10,17 @@ define [
 		template:'app/template/segment_timeline'
 		className:'segment_timeline'
 
+		events:{
+			'mousedown':'onMouseDown'
+			'reset'    :'onReset'
+		}
+
+		onReset:->
+			@render()
+
+		onMouseDown:->
+			@model.trigger 'segment_select',@
+
 		serialize:()->
 			@model.toJSON()
 

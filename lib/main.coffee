@@ -13,6 +13,10 @@ require.config
     		exports:'Handlebars'
     	jqueryuitouchpunch:
     		deps:['jquery','jqueryui']
+    	timepicker:
+    		deps:['jquery','bootstrap']
+    	bootstrap:
+    		deps:['jquery']
 
 	paths:
 		moment             : "../components/moment/moment"
@@ -24,14 +28,16 @@ require.config
 		jqueryui           : "../components/jquery-ui/ui/jquery-ui.custom"
 		layoutmanager      : "../components/layoutmanager/backbone.layoutmanager"
 		jqueryuitouchpunch : "../components/jquery-ui-touch-punch/jquery.ui.touch-punch"
-
+		timepicker         : "../components/bootstrap-timepicker/js/bootstrap-timepicker"
+		bootstrap 		   : "../components/bootstrap/bootstrap/js/bootstrap.min"
 
 require [
 	'App'
 	'Router'
 	'view/TimeLineView'
+	'view/DetailView'
 	'collection/SegmentCollection'
-],(app,Router,TimeLineView,SegmentCollection)->
+],(app,Router,TimeLineView,DetailView,SegmentCollection)->
 
 	app.router  = new Router();
 	app.globals = {}
@@ -49,13 +55,12 @@ require [
 	segmentCollection = new SegmentCollection();
 
 	app.useLayout('app/layout/index')
-	.setView(".timeline",new TimeLineView(
-		collection:segmentCollection
-	))
+	.setViews({
+		".timeline":new TimeLineView(collection:segmentCollection)
+		".segment_detail_view": new DetailView(collection:segmentCollection)
+	})
 
-	segmentCollection.fetch({add:true}).success ()->
-		console.log segmentCollection.length
-
+	segmentCollection.fetch()
 
 
 
