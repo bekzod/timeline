@@ -2,48 +2,93 @@ define [
 	'app'
 	'backbone'
 	'timepicker'
+	'moment'
 ],(app)->
 
-	DetailView = Backbone.View.extend
+	class DetailView extends Backbone.View
 		template:"app/template/segment_detail"
 		
 		events:{
-			'click #save:not(.disabled)' :'onSave'
-			'click #reset:not(.disabled)':'onReset'
-			'change:startDate model':'onStartDateChange'
+
 		}
 
 		initialize:->
-			@collection.on 'segment_select',@onSegmentSelect,@
-
-		onStartDateChange:->
-			console.log 'onStartDateChange'
-
-		onSegmentSelect:(seg)->
-			@model = seg;
-
-		onSave:->
-			console.log 'on Save'
+			@collection.on 'segmentSelected',@onSegmentSelect,@ 
 
 		onReset:->
-			console.log 'on Reset'
 			@collection.reset(@collection.selectedSegment)
 
+		onSegmentSelect:(segment)->
+			@model = segment
+			@render()
+
+		setNewModel:(model)->
+			# @model.on 'change:startDate change:playDuration change:startOffset',@afterRender,@
+
 		afterRender:->
+			if !@model then return 
+
 			@$el.find('#startDate').timepicker(
-				minuteStep: 1
+				minuteStep:1
 				secondStep:1
 				showSeconds:true
-				showInputs: false
-				disableFocus: false
-				showMeridian:false;
+				showInputs:false
+				disableFocus:false
+				showMeridian:false
 				# template:'modal'
-			).timepicker('setTime', '12:12:12')
-			.on('changeTime.timepicker',@onTimeChange)
+			).timepicker('setTime', moment(@model.get('startDate')).format('HH:mm:ss'))
+			.on('changeTime.timepicker',@onStartTimePick)
 			.addClass('disabled')
 
-		onTimeChange:(e)->
-			console.log e.time
+			@$el.find('#playDuration').timepicker(
+				minuteStep:1
+				secondStep:1
+				showSeconds:true
+				showInputs:false
+				disableFocus:false
+				showMeridian:false
+				# template:'modal'
+			).timepicker('setTime', moment(@model.get('playDuration')).format('HH:mm:ss'))
+			.on('changeTime.timepicker',@onPlayDurationPick)
+			.addClass('disabled')
 
+			@$el.find('#startOffset').timepicker(
+				minuteStep:1
+				secondStep:1
+				showSeconds:true
+				showInputs:false
+				disableFocus:false
+				showMeridian:false
+				# template:'modal'
+			).timepicker('setTime', moment(@model.get('startOffset')).format('HH:mm:ss'))
+			.on('changeTime.timepicker',@onPlayStartOffPick)
+			.addClass('disabled')
+
+		onStartTimePick:(e)=>
+			eventTime = e.time
+			if @model 
+				time = moment(@model.get('startDate'))
+				.hour(eventTime.hours)
+				.minute(eventTime.minutes)
+				.second(eventTime.seconds)
+				console.log e.time.minutes,time.minutes()
+
+		onPlayDurationPick:(e)->
+			eventTime = e.time
+			if @model 
+				time = moment(@model.get('playDuration'))
+				.hour(eventTime.hours)
+				.minute(eventTime.minutes)
+				.second(eventTime.seconds)
+				@model.set('playDuration',time.valueOf())
+
+		onPlayStartOffPick:(e)->
+			eventTime = e.time
+			if @model 
+				time = moment(@model.get('startOffset'))
+				.hour(eventTime.hours)
+				.minute(eventTime.minutes)
+				.second(eventTime.seconds)
+				@model.set('startOffset',time.valueOf())
 
 

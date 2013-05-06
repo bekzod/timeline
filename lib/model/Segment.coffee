@@ -3,7 +3,7 @@ define [
 	'moment'
 ],()->
 	
-	Segment = Backbone.Model.extend
+	class Segment extends Backbone.Model
 		idAttribute: "_id"
 
 		defaults:
@@ -13,4 +13,4 @@ define [
 			content:""
 			transitions:[]
 			
-			selected:false
+			selected:false;

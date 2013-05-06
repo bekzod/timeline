@@ -10,7 +10,7 @@ define [
 	INTIAL_AMOUNT = 1440
 	ZOOM_AMOUNT   = 240
 
-	TimeLineView = Backbone.View.extend
+	class TimeLineView extends Backbone.Layout
 		template:'app/template/timeline'
 
 		events:{
@@ -24,10 +24,10 @@ define [
 			@width = INTIAL_AMOUNT
 			app.globals.TIMELINE_WIDTH = @width
 			@collection.on 'add',@onSegmentAdd,@
-			@collection.on 'segment_select',@onSegmentSelect,@
-
-		onSegmentSelect:->
+			@collection.on 'reset',@onCollectionReset,@
 			
+		onCollectionReset:->
+			@render()
 
 		serialize:->
 			times = []
@@ -51,8 +51,9 @@ define [
 
 		moveTimeBox:-> 
 			d = new Date()
-			boxWidth = @width * ((d.getHours()*60*60 + d.getMinutes()*60+d.getSeconds())/(24*60*60))
-			@$el.find('.timebox').width boxWidth
+			if @collection.fromDate < d.valueOf()
+				boxWidth = @width * ((d.getHours()*60*60 + d.getMinutes()*60+d.getSeconds())/(24*60*60))
+				@$el.find('.timebox').width boxWidth
 
 		onZoomOut:->
 			newWidth = @width - ZOOM_AMOUNT

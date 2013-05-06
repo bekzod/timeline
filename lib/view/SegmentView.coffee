@@ -6,31 +6,37 @@ define [
 	'jqueryuitouchpunch'
 ],(app)->
 	
-	SegmentView = Backbone.Layout.extend
+	class SegmentView extends Backbone.Layout
+		
 		template:'app/template/segment_timeline'
 		className:'segment_timeline'
-
+		
 		events:{
-			'mousedown':'onMouseDown'
-			'reset'    :'onReset'
+			'change:startDate model':'onStartDateChange'			
 		}
+
+		initialize:->
+			@model.on 'reset',@onChange,@
+
+		onChange:->
+			console.log 'onChane' + @model.get('id')
 
 		onReset:->
 			@render()
 
-		onMouseDown:->
-			@model.trigger 'segment_select',@
-
 		serialize:()->
-			@model.toJSON()
+			color = 'blue'
+			id = @model.get('id')
+			if id 
+				color = '#'+id.split(0,6);
+			{color}
 
 		getOffset:()->
 			startTime = new Date @model.get 'startDate'
 			startTimeInSecond = startTime.getHours()*60*60*1000
-			+ startTime.getMinutes()*60*1000
-			+ startTime.getSeconds()*1000
-			+ startTime.getMilliseconds()
-
+			startTimeInSecond += startTime.getMinutes()*60*1000
+			startTimeInSecond += startTime.getSeconds()*1000
+			startTimeInSecond += startTime.getMilliseconds()
 			startTimeInSecond/(24*60*60*1000) * app.globals.TIMELINE_WIDTH
 
 		getWidth:()->
@@ -48,10 +54,12 @@ define [
 
 			@model.set('startDate',oldStartDate.getTime())
 
+
+		onStartDateChange:->
+
 		onDragStop:(e,ui)->
 
-
-		afterRender:()->
+		afterRender:()=>
 			@$el.draggable(
 				containment:'parent'
 				drag:_.bind(@onDrag,@)

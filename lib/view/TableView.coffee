@@ -1,41 +1,27 @@
-define ['./RowView','backbone'],(RowView)->
+define [
+	'./TableItem'
+	'layoutmanager'
+],(TableItem)->
+	
+	class TableView extends Backbone.View
+		template:'app/template/table_view'
 
-	TableView=Backbone.View.extend
-		tagName:'table'
-		className:'tableview table'
-		
 		initialize:->
-			_.bindAll(@)
-			@collection.on 'add',@onAddOne
-			@collection.on 'reset',@render
+			@collection.on 'add',@onSegmentAdd,@
+			@collection.on 'reset',@onCollectionReset,@
 
-		template:->
-			'''
-			<thead>
-				<th>Content Id</th>
-				<th>Start Date</th>
-				<th>End Date</th>
-				<th>Play Duration</th>
-				<th>Synced</th>
-			</thead>
-			<tbody></tbody>
-			'''
+		onCollectionReset:->
+			@render()
 
-		onAddOne:(model)->
-			@addOne(model)
+		onSegmentAdd:(seg)->
+			tableItem = new TableItem(model:seg)
+			@insertView "tbody",tableItem
+			tableItem.render();
 
-		addOne:(model)->
-			row = new RowView( model:model ).render()
-			@$body.append(row.el)
+		afterRender:->
+			@collection.models.forEach (seg)=>
+				@onSegmentAdd seg
 
-		addCollection:(collection)->
-			collection.each (model)=>@addOne model
 
-		render:->
-			tag=@$el
-			tag.empty();
-			tag.html(@template())
-			@$body=tag.find('tbody')
-			tag.append()
-			@addCollection(@collection)
-			@
+
+		

@@ -17,6 +17,13 @@ require.config
     		deps:['jquery','bootstrap']
     	bootstrap:
     		deps:['jquery']
+    	backbonegrid:
+    		deps:['backbone']
+    	backbonemodal:
+    		exports:'Backbone.BootstrapModal'
+    		deps:['backbone','bootstrap']
+
+
 
 	paths:
 		moment             : "../components/moment/moment"
@@ -30,6 +37,9 @@ require.config
 		jqueryuitouchpunch : "../components/jquery-ui-touch-punch/jquery.ui.touch-punch"
 		timepicker         : "../components/bootstrap-timepicker/js/bootstrap-timepicker"
 		bootstrap 		   : "../components/bootstrap/bootstrap/js/bootstrap.min"
+		backbonegrid       : "../components/backbone.datagrid/dist/backbone.datagrid"
+		backbonemodal 	   : "../components/backbone.bootstrap-modal/src/backbone.bootstrap-modal"
+		# queryparams 	   : "../components/backbone-query-parameters/backbone.queryparams.js"
 
 require [
 	'App'
@@ -39,10 +49,10 @@ require [
 	'collection/SegmentCollection'
 ],(app,Router,TimeLineView,DetailView,SegmentCollection)->
 
-	app.router  = new Router();
 	app.globals = {}
+	app.router  = new Router();
 
-	Backbone.history.start({ pushState: true, root: app.root });
+	Backbone.history.start({ root: app.root });
 	
 	$(document).on "click", "a:not([data-bypass])",(evt)->
 		href = { prop: $(this).prop("href"), attr: $(this).attr("href") }
@@ -51,21 +61,6 @@ require [
 		if href.prop && href.prop.slice(0, root.length) == root
 			evt.preventDefault()
 			Backbone.history.navigate(href.attr, true)
-
-	segmentCollection = new SegmentCollection();
-
-	app.useLayout('app/layout/index')
-	.setViews({
-		".timeline":new TimeLineView(collection:segmentCollection)
-		".segment_detail_view": new DetailView(collection:segmentCollection)
-	})
-
-	segmentCollection.fetch()
-
-
-
-
-	
 
 
 
