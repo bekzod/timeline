@@ -25,8 +25,9 @@ define [
 			app.globals.TIMELINE_WIDTH = @width
 			@collection.on 'add',@onSegmentAdd,@
 			@collection.on 'reset',@onCollectionReset,@
-			
+
 		onCollectionReset:->
+			console.log "reset"
 			@render()
 
 		serialize:->
@@ -51,7 +52,7 @@ define [
 
 		moveTimeBox:-> 
 			d = new Date()
-			if @collection.fromDate < d.valueOf()
+			if app.globals.selectedDate.valueOf() < d.valueOf()
 				boxWidth = @width * ((d.getHours()*60*60 + d.getMinutes()*60+d.getSeconds())/(24*60*60))
 				@$el.find('.timebox').width boxWidth
 
@@ -83,6 +84,7 @@ define [
 
 
 		onSegmentAdd:(model)->
+			console.log "added"
 			seg = new SegmentView( model:model)
-			@insertView('.timeline_segment_container',seg)
+			@insertView '.timeline_segment_container',seg
 			seg.render();

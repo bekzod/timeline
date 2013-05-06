@@ -16,29 +16,26 @@ define [
 			@model.set('selected',true);
 
 		initialize:->
-			@model.on 'change',@onSelectChange,@
+			@model.on 'change save:success',@render,@
+			@model.on 'destroy',@remove,@
 
 		serialize:->
 			id = @model.get('id');
-			id = id && id.substr(id.length-5);
+			id = id && id.substr(id.length-2);
 			startTime = moment(@model.get('startDate')).format('HH:mm:ss')
-			isSaved = !@model.isNew()
-
+			isSaved = !@model.hasBeenModifed()
 			{
 				id
 				startTime
 				isSaved
 				contentId:@model.get('content')
 			}
-
-		onSelectChange:->
+			
+		afterRender:->
 			if @model.get('selected')
 				@$el.addClass('success')
 			else
 				@$el.removeClass('success')
-			
-		afterRender:->
-			@onSelectChange()
 
 
 

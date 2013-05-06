@@ -6,30 +6,26 @@ define [
 	'jqueryuitouchpunch'
 ],(app)->
 	
-	class SegmentView extends Backbone.Layout
+	class SegmentView extends Backbone.View
 		
 		template:'app/template/segment_timeline'
 		className:'segment_timeline'
 		
 		events:{
-			'change:startDate model':'onStartDateChange'			
+			'mousedown':'onMousedown'
 		}
 
+		onMousedown:(e)->
+			e.preventDefault()
+			@model.set('selected',true)
+
 		initialize:->
-			@model.on 'reset',@onChange,@
-
-		onChange:->
-			console.log 'onChane' + @model.get('id')
-
-		onReset:->
-			@render()
+			@model.on 'reset',@render,@
+			@model.on 'change:startDate change:playDuration',@afterRender,@			
+			@model.on 'destroy',@remove,@
 
 		serialize:()->
-			color = 'blue'
-			id = @model.get('id')
-			if id 
-				color = '#'+id.split(0,6);
-			{color}
+			{color:@model.getColor()}
 
 		getOffset:()->
 			startTime = new Date @model.get 'startDate'

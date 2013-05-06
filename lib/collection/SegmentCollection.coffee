@@ -3,29 +3,30 @@ define [
 	'backbone'
 ],(Segment)->
 	class SegmentCollection extends Backbone.Collection
-		url:->
-			url = [
-					@server
-					'/player/segment/'
-					@playerId
-					'?fromDate='
-					@fromDate
-					'&toDate='
-					@toDate
+		url:(name)->
+			[
+				@server
+				'/player/segment/'
+				@playerId
 			].join('')
 		
 		model:Segment
 
 		initialize:->
 			@on 'change:selected',@onSelectedChange,@
+			@on 'remove',@onDestroy,@
 			@on 'add',@onAdd,@
 
+		onDestroy:(model)->
+			if model == @currentSegment
+				@onSelectedChange(null)
+		
 		onAdd:(model)->
-			if model.get('selected')
-				@onSelectedChange(model);				
+			@onSelectedChange(model)
 
 		onSelectedChange:(seg)->
-			if !seg.get('selected')||seg == @currentSegment then return
+			if seg && !seg.get('selected') then return
+			if seg == @currentSegment then return
 			if @currentSegment 
 				@currentSegment.set('selected',false);
 				@currentSegment = null

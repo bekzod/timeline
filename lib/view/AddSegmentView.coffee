@@ -1,7 +1,8 @@
 define [
+	'App'
   	'backbonegrid'
 	'backbonemodal'
-],()->
+],(app)->
 	
 	class AddSegmentView extends Backbone.View
 		
@@ -28,7 +29,14 @@ define [
 
 		onModelSelect:(contentModel)->
 			@modal.close()
+
+			if app.globals.selectedDate.valueOf() > Date.now()
+				startDate = app.globals.selectedDate.valueOf()
+			else 
+				startDate = Date.now()+1000*60*10
+
 			@segments.add({
+				startDate
 				content:contentModel.id
 				contentModel:contentModel
 				selected:true

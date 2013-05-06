@@ -27,8 +27,8 @@ define [
 
 			@contents.playerId = '517406256f81af0000000002'
 			@segments.playerId = '517406256f81af0000000002'
-			@contents.server   = 'http://altermedia.nodejitsu.com'
-			@segments.server   = 'http://altermedia.nodejitsu.com'
+			@contents.server   = 'http://127.0.0.1:5000'
+			@segments.server   = 'http://127.0.0.1:5000'
 
 			app.useLayout('app/layout/index')
 			.setViews({
@@ -49,10 +49,14 @@ define [
 		dateSelected:(date)->
 			date = moment(date)
 			if !date.isValid() then date = moment().startOf('day')
+			app.globals.selectedDate = date
 
-			@segments.fromDate = date.valueOf()
-			@segments.toDate   = moment(date).add('day',1).valueOf();
-			@segments.fetch()
+			@segments.fetch({
+				data:{	
+					fromDate:date.valueOf()
+					toDate:moment(date).add('day',1).valueOf();
+				}
+			})
 			
 			@segments.on 'add',(model)->console.log "modal added"
 

@@ -1,5 +1,6 @@
 define [
 	'app'
+	'layoutmanager'
 	'backbone'
 	'timepicker'
 	'moment'
@@ -7,27 +8,55 @@ define [
 
 	class DetailView extends Backbone.View
 		template:"app/template/segment_detail"
-		
 		events:{
-
+			'click #delete':'onDeleteClick'
+			'click #reset':'onResetClick'
+			'click #save':'onSaveClick'
 		}
 
+		onDeleteClick:(e)->
+			e.preventDefault()
+			e.stopImmediatePropagation()
+			if $(e.target).hasClass('disabled') then return
+			if @model then @model.destroy()
+		
+		onSaveClick:(e)->
+			e.preventDefault()
+			e.stopImmediatePropagation()
+			if $(e.target).hasClass('disabled') then return
+			if @model then @model.save()
+
+		onResetClick:(e)->
+			e.preventDefault()
+			e.stopImmediatePropagation()
+			if $(e.target).hasClass('disabled') then return
+			if @model then @model.revert()
+
+
 		initialize:->
-			@collection.on 'segmentSelected',@onSegmentSelect,@ 
+			@collection.on 'segmentSelected',@setNewModel,@ 
 
 		onReset:->
 			@collection.reset(@collection.selectedSegment)
 
-		onSegmentSelect:(segment)->
-			@model = segment
-			@render()
-
 		setNewModel:(model)->
-			# @model.on 'change:startDate change:playDuration change:startOffset',@afterRender,@
+			if @model then @model.off 'change:startDate change:playDuration change:startOffset',@afterRender,@
+			@model = null
+			if model
+				@model = model
+				@model.on 'change:startDate change:playDuration change:startOffset',@afterRender,@
+			@afterRender()
 
 		afterRender:->
-			if !@model then return 
+			startDate     = "00:00:00"
+			playDuration  = "00:00:00"
+			startOffset   = "00:00"
 
+			if @model
+				startDate     = moment(@model.get('startDate')).format('HH:mm:ss')
+				playDuration  = moment(@model.get('playDuration')).format('HH:mm:ss')
+				startOffset   = moment(@model.get('startOffset')).format('mm:ss')
+			
 			@$el.find('#startDate').timepicker(
 				minuteStep:1
 				secondStep:1
@@ -36,7 +65,7 @@ define [
 				disableFocus:false
 				showMeridian:false
 				# template:'modal'
-			).timepicker('setTime', moment(@model.get('startDate')).format('HH:mm:ss'))
+			).timepicker('setTime',startDate)
 			.on('changeTime.timepicker',@onStartTimePick)
 			.addClass('disabled')
 
@@ -48,21 +77,31 @@ define [
 				disableFocus:false
 				showMeridian:false
 				# template:'modal'
-			).timepicker('setTime', moment(@model.get('playDuration')).format('HH:mm:ss'))
+			).timepicker('setTime', playDuration)
 			.on('changeTime.timepicker',@onPlayDurationPick)
 			.addClass('disabled')
 
 			@$el.find('#startOffset').timepicker(
 				minuteStep:1
 				secondStep:1
-				showSeconds:true
 				showInputs:false
 				disableFocus:false
 				showMeridian:false
 				# template:'modal'
-			).timepicker('setTime', moment(@model.get('startOffset')).format('HH:mm:ss'))
+			).timepicker('setTime',startOffset)
 			.on('changeTime.timepicker',@onPlayStartOffPick)
 			.addClass('disabled')
+
+			deleteBtn = @$el.find('#delete').addClass('disabled')
+			saveBtn   = @$el.find('#save').addClass('disabled')
+			resetBtn  = @$el.find('#reset').addClass('disabled')
+ 
+			if @model 
+				deleteBtn.removeClass('disabled')
+				if @model.hasBeenModifed()
+					saveBtn.removeClass('disabled')
+					resetBtn.removeClass('disabled')
+
 
 		onStartTimePick:(e)=>
 			eventTime = e.time
@@ -71,9 +110,9 @@ define [
 				.hour(eventTime.hours)
 				.minute(eventTime.minutes)
 				.second(eventTime.seconds)
-				console.log e.time.minutes,time.minutes()
+				@model.set('startDate',time.valueOf())
 
-		onPlayDurationPick:(e)->
+		onPlayDurationPick:(e)=>
 			eventTime = e.time
 			if @model 
 				time = moment(@model.get('playDuration'))
@@ -82,13 +121,12 @@ define [
 				.second(eventTime.seconds)
 				@model.set('playDuration',time.valueOf())
 
-		onPlayStartOffPick:(e)->
+		onPlayStartOffPick:(e)=>
 			eventTime = e.time
 			if @model 
 				time = moment(@model.get('startOffset'))
-				.hour(eventTime.hours)
-				.minute(eventTime.minutes)
-				.second(eventTime.seconds)
+				.minute(eventTime.hours)
+				.second(eventTime.minutes)
 				@model.set('startOffset',time.valueOf())
 
 
