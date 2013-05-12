@@ -1,0 +1,86 @@
+
+<div class='timeline_container'>
+	<div class="timeline_background" style="width:{{ width }}px;">
+		{{#each times}}
+			<div class='timeline_time_element'>{{ time }}</div>
+		{{/each}}
+	</div>
+	
+	<div class="timebox">
+		<div class="redline"></div>		
+	</div>
+
+	<div class="timeline_segment_container" style="width:{{ width }}px;" ></div>
+</div>
+
+<div>
+	<button class="btn" id='left'>LEFT</button>
+	<button class="btn" id="right">RIGHT</button>
+	<button class="btn" id='zoomout'>zoom out</button>
+	<button class="btn" id="zoomin">zoom in</button>	
+</div>
+
+
+
+
+
+
+
+<style rel="stylesheet" type="text/css" >
+
+	.timebox{
+		background-color: grey;
+		opacity: .8;
+		height:100%;
+		width: 0px;
+		position: absolute;
+	}
+	.redline{
+		float:right;
+		background-color: red;
+		width:2px;
+		height: 100%;
+	}
+	
+	.timeline_container{
+		width: 100%;
+		height: 200px;
+		overflow-x: auto;
+		position: relative;
+	}
+
+	.timeline_background{
+		background-color: #cccccc;
+		background-image: url(../app/images/line3.png);
+		background-repeat: repeat-x;
+		background-position: 0px 140px;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+
+	.timeline_segment_container{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+
+	.timeline_time_element{
+		margin-top:170px;
+		margin-left:64px;
+		float:left;
+	}
+
+	.timeline_background > .timeline_time_element:first-child{
+		margin-left:-27px;
+		float:left;
+	}
+	
+	.timeline_segment_container{
+		height: 200px;
+		position: absolute;
+	}
+	
+</style>
+
+

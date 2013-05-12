@@ -1,0 +1,35 @@
+
+
+body {
+	background-image: url(../images/background.png);
+	background-repeat: true;
+}
+
+
+
+
+
+
+.selectedRow{
+	background-color: red
+}
+.rowview_selected{
+	background-color: #ffaaff;
+}
+
+.segmentview{
+	position:absolute;
+	height:100%;
+}
+
+.timePicker tr td{
+	text-align:center
+}
+.timePicker tr td input{
+	text-align:center
+}
+
+.tableview thead { display:block; margin:0px; cell-spacing:0px; left:0px; }
+.tableview tbody { display:block; overflow:auto; height:300px; }
+.tableview th { height:20px; width:80px; }
+.tableview td { height:20px; width:80px;margin:0px; cell-spacing:0px;}

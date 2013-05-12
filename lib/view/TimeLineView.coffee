@@ -46,15 +46,15 @@ define [
 		afterRender:->
 			@collection.models.forEach (seg)=>
 				@onSegmentAdd seg
-			clearTimeout(@timerId)
-			@timerId = setTimeout(_.bind(@moveTimeBox,@),.5)
-
+			@moveTimeBox()
 
 		moveTimeBox:-> 
 			d = new Date()
 			if app.globals.selectedDate.valueOf() < d.valueOf()
 				boxWidth = @width * ((d.getHours()*60*60 + d.getMinutes()*60+d.getSeconds())/(24*60*60))
 				@$el.find('.timebox').width boxWidth
+				clearTimeout(@timerId)
+				@timerId = setTimeout(_.bind(@moveTimeBox,@),500)
 
 		onZoomOut:->
 			newWidth = @width - ZOOM_AMOUNT

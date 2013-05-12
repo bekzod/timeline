@@ -1,12 +1,13 @@
 define [
+	'App'
 	'../model/Content'
 	'backbone'
-],(Content)->
+],(app,Content)->
 	class ContentCollection extends Backbone.Collection
 		url:->
-			[@server
+			[app.globals.server
 			'/player/content/'
-			@playerId
+			app.globals.playerId
 			].join('')
 
 		parse:(res)->

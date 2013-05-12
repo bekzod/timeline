@@ -1,13 +1,14 @@
 define [
+	'App'
 	'../model/Segment'
 	'backbone'
-],(Segment)->
+],(app,Segment)->
 	class SegmentCollection extends Backbone.Collection
 		url:(name)->
 			[
-				@server
+				app.globals.server
 				'/player/segment/'
-				@playerId
+				app.globals.playerId
 			].join('')
 		
 		model:Segment

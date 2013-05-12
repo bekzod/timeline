@@ -6,9 +6,10 @@ define [
   './view/DetailView'
   './view/TableView'
   './view/AddSegmentView'
+  './view/InfoPanelView'
   'moment'
   'layoutmanager'
-],(app,SegmentCollection,ContentCollection,TimeLineView,DetailView,TableView,AddSegmentView)->
+],(app,SegmentCollection,ContentCollection,TimeLineView,DetailView,TableView,AddSegmentView,InfoPanelView)->
 
 
 	readablizeBytes = (bytes)->
@@ -21,14 +22,11 @@ define [
 
 		initialize:->		
 			app.globals = {}
+			app.globals.playerId = '517406256f81af0000000002'
+			app.globals.server   = ''
 			
 			@segments = new SegmentCollection()
 			@contents = new ContentCollection()
-
-			@contents.playerId = '517406256f81af0000000002'
-			@segments.playerId = '517406256f81af0000000002'
-			@contents.server   = 'http://127.0.0.1:5000'
-			@segments.server   = 'http://127.0.0.1:5000'
 
 			app.useLayout('app/layout/index')
 			.setViews({
@@ -36,12 +34,12 @@ define [
 				".segment_detail_view": new DetailView(collection:@segments)
 				".segment_table_view" : new TableView(collection:@segments)
 				".add_segment_view"   : new AddSegmentView(contents:@contents,segments:@segments)
+				".info_panel"         : new InfoPanelView(collection:@segments)
 			})
 
 		routes:
 			"": "index"
 			"date/:date":"dateSelected"
-			"date/:date/segment/:segment":"segmentSelected"
 			
 		index:->
 			@dateSelected()
@@ -61,20 +59,3 @@ define [
 			@segments.on 'add',(model)->console.log "modal added"
 
 			@navigate "date/"+date.format('YYYY-M-DD')
-
-
-		segmentSelected:(date,segment)->
-			if segment.length != 24 || @segments.fromDate != date || !@segments.length
-				return @dateSelected(date)
-
-			app.trigger 'segment:selected',segment
-
-
-
-
-
-
-
-
-
-

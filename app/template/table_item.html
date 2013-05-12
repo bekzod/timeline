@@ -1,0 +1,11 @@
+<tr>
+	<td>{{ id }}</td>
+	<td>{{ startTime }}</td>
+	<td>{{ contentId }}</td>
+	
+	{{#if isSaved}}
+		<td><i class="icon-ok"></i></td>
+	{{else}}
+		<td><i class="icon-remove"></i></td>
+	{{/if}}
+</tr>
