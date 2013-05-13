@@ -1,5 +1,5 @@
 define [
-	'App'
+	'app'
 	'../model/Content'
 	'backbone'
 ],(app,Content)->

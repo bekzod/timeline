@@ -43,33 +43,28 @@ require.config
 
 require [
   'App'
-  'Router'
   'layoutmanager'
-],(app,Router)->
+],(app)->
 
   JST = window.JST = window.JST || {};
 
   Backbone.Layout.configure({
     fetch:(path)->
-        path = path + ".html"
-        done = null
-        if !JST[path]
-          done = @async()
-          return $.ajax({ url: app.root + path }).then (contents)->
-            JST[path] = Handlebars.compile(contents)
-            JST[path].__compiled__ = true
-            done(JST[path])
-
-        if !JST[path].__compiled__
-          JST[path] = Handlebars.template(JST[path])
+      path = path + ".html"
+      done = null
+      if !JST[path]
+        done = @async()
+        return $.ajax({ url: app.root + path }).then (contents)->
+          JST[path] = Handlebars.compile(contents)
           JST[path].__compiled__ = true
+          done(JST[path])
 
-        JST[path]
+      if !JST[path].__compiled__
+        JST[path] = Handlebars.template(JST[path])
+        JST[path].__compiled__ = true
+
+      JST[path]
   })
-
-  app.router  = new Router();
-
-  Backbone.history.start({ root: app.root });
 
   $(document).on "click", "a:not([data-bypass])",(evt)->
     href = { prop: $(this).prop("href"), attr: $(this).attr("href") }
@@ -79,6 +74,6 @@ require [
       evt.preventDefault()
       Backbone.history.navigate(href.attr, true)
 
-
+  app.init()
 
 

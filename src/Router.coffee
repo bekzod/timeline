@@ -1,5 +1,5 @@
 define [
-  "App"
+  'app'
   './collection/SegmentCollection'
   './collection/ContentCollection'
   './view/TimeLineView'
@@ -24,34 +24,30 @@ define [
 			@segments = new SegmentCollection()
 			@contents = new ContentCollection()
 
-			app.useLayout('app/layout/index')
-			.setViews({
-				".timeline"           : new TimeLineView(collection:@segments)
-				".segment_detail_view": new DetailView(collection:@segments)
-				".segment_table_view" : new TableView(collection:@segments)
-				".add_segment_view"   : new AddSegmentView(contents:@contents,segments:@segments)
-				".info_panel"         : new InfoPanelView(collection:@segments)
-			})
-
 		routes:
 			"": "index"
 			"date/:date":"dateSelected"
 
 		index:->
-			@dateSelected()
+      app.useLayout('app/layout/index')
+      .setViews({
+        ".timeline"           : new TimeLineView(collection:@segments)
+        ".segment_detail_view": new DetailView(collection:@segments)
+        ".segment_table_view" : new TableView(collection:@segments)
+        ".add_segment_view"   : new AddSegmentView(contents:@contents,segments:@segments)
+        ".info_panel"         : new InfoPanelView(collection:@segments)
+      })
+      @dateSelected()
 
 		dateSelected:(date)->
-			date = moment(date)
-			if !date.isValid() then date = moment().startOf('day')
-			app.globals.selectedDate = date
+      if !app.layout then return @index()
+      date = moment(date)
+      if !date.isValid() then date = moment().startOf('day')
+      app.globals.selectedDate = date
 
-			@segments.fetch({
-				data:{
-					fromDate:date.valueOf()
-					toDate:moment(date).add('day',1).valueOf();
-				}
-			})
-
-			@segments.on 'add',(model)->console.log "modal added"
-
-			@navigate "date/"+date.format('YYYY-M-DD')
+      @segments.fetch(
+        data:
+          fromDate:date.valueOf()
+          toDate:moment(date).add('day',1).valueOf();
+      )
+      @navigate "date/"+date.format('YYYY-M-DD')

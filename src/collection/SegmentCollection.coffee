@@ -1,5 +1,5 @@
 define [
-	'App'
+	'app'
 	'../model/Segment'
 	'backbone'
 ],(app,Segment)->
@@ -10,7 +10,7 @@ define [
 				'/player/segment/'
 				app.globals.playerId
 			].join('')
-		
+
 		model:Segment
 
 		initialize:->
@@ -21,14 +21,14 @@ define [
 		onDestroy:(model)->
 			if model == @currentSegment
 				@onSelectedChange(null)
-		
+
 		onAdd:(model)->
 			@onSelectedChange(model)
 
 		onSelectedChange:(seg)->
 			if seg && !seg.get('selected') then return
 			if seg == @currentSegment then return
-			if @currentSegment 
+			if @currentSegment
 				@currentSegment.set('selected',false);
 				@currentSegment = null
 			@currentSegment = seg

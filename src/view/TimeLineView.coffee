@@ -1,8 +1,8 @@
 define [
+	'app'
 	'./SegmentView'
 	'moment'
-	'App'
-],(SegmentView,moment,app)->
+],(app,SegmentView)->
 
 	MAX_ZOOM = 11520
 	MIN_ZOOM = 1440
@@ -85,7 +85,6 @@ define [
 
 
 		onSegmentAdd:(model)->
-			console.log "added"
 			seg = new SegmentView( model:model)
 			@insertView '.timeline_segment_container',seg
 			seg.render();
