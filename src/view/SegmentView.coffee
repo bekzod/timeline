@@ -5,12 +5,12 @@ define [
 	'jqueryui'
 	'jqueryuitouchpunch'
 ],(app)->
-	
+
 	class SegmentView extends Backbone.View
-		
+		manage:true
 		template:'app/template/segment_timeline'
 		className:'segment_timeline'
-		
+
 		events:{
 			'mousedown':'onMousedown'
 		}
@@ -21,7 +21,7 @@ define [
 
 		initialize:->
 			@model.on 'reset',@render,@
-			@model.on 'change:startDate change:playDuration',@afterRender,@			
+			@model.on 'change:startDate change:playDuration',@afterRender,@
 			@model.on 'destroy',@remove,@
 
 		serialize:()->

@@ -1,21 +1,18 @@
 define [
 	'App'
-  	'backbonegrid'
+  'backbonegrid'
 	'backbonemodal'
 ],(app)->
-	
+
 	class AddSegmentView extends Backbone.View
-		
-		# template:'app/template/segment_timeline'
+
 		el:false
+		manage:true
 		events:{
 			click:'onClick'
 		}
 
 		onClick:(e)->
-			e.preventDefault();
-			e.stopImmediatePropagation();
-			
 			@modal = new Backbone.BootstrapModal(
 				title      : "Select Media To Play"
 				content    : @contentGrid
@@ -26,15 +23,14 @@ define [
 				okText:"cancel"
 			)
 			@modal.open()
+			false
 
 		onModelSelect:(contentModel)->
 			@modal.close()
-
 			if app.globals.selectedDate.valueOf() > Date.now()
 				startDate = app.globals.selectedDate.valueOf()
-			else 
+			else
 				startDate = Date.now()+1000*60*10
-
 			@segments.add({
 				startDate
 				content:contentModel.id
@@ -65,20 +61,19 @@ define [
 					,'duration'
 					,'type'
 					{
-						view: {
+						view:
 							type: Backbone.Datagrid.ActionCell
 							label: 'Select'
 							actionClassName: 'btn btn-primary'
 							action:(model)->
 								self.onModelSelect(model)
 								false
-						}
 					}
 				]
 			})
 
-			
-		
+
+
 		afterRender:->
 			$('<a></a>',{class:"btn btn-primary",text:'Add Segment'}).appendTo(@$el)
 

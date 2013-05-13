@@ -2,8 +2,9 @@ define [
 	'layoutmanager'
 	'moment'
 ],()->
-	
-	class TableItem  extends Backbone.Layout
+
+	class TableItem  extends Backbone.View
+		manage:true
 		template:'app/template/table_item'
 		el:false
 		events:{
@@ -24,13 +25,14 @@ define [
 			id = id && id.substr(id.length-2);
 			startTime = moment(@model.get('startDate')).format('HH:mm:ss')
 			isSaved = !@model.hasBeenModifed()
+			console.log @model.toJSON();
 			{
 				id
 				startTime
 				isSaved
 				contentId:@model.get('content')
 			}
-			
+
 		afterRender:->
 			if @model.get('selected')
 				@$el.addClass('success')
@@ -41,6 +43,6 @@ define [
 
 
 
-			
 
-		
+
+

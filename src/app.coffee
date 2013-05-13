@@ -10,10 +10,10 @@ define [
 		root: "/"
 
 	JST = window.JST = window.JST || {};
-	
+
 	Backbone.Layout.configure({
 		manage: true
-				
+
 		fetch:(path)->
 				path = path + ".html"
 				done = null
@@ -27,7 +27,7 @@ define [
 				if !JST[path].__compiled__
 					JST[path] = Handlebars.template(JST[path])
 					JST[path].__compiled__ = true
-				
+
 				JST[path]
 	})
 
@@ -38,7 +38,7 @@ define [
 		useLayout:(name, options)->
 			if @layout && @layout.options.template == name
 				return @layout
-			
+
 			if @layout then @layout.remove()
 
 			layout = new Backbone.Layout(
@@ -55,4 +55,4 @@ define [
 			layout
 	}, Backbone.Events)
 
-	
+

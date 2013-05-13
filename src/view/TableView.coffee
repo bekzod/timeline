@@ -2,8 +2,9 @@ define [
 	'./TableItem'
 	'layoutmanager'
 ],(TableItem)->
-	
+
 	class TableView extends Backbone.View
+		manage:true
 		template:'app/template/table_view'
 
 		initialize:->
@@ -24,4 +25,4 @@ define [
 
 
 
-		
+

@@ -11,6 +11,7 @@ define [
 	ZOOM_AMOUNT   = 240
 
 	class TimeLineView extends Backbone.Layout
+		manage:true
 		template:'app/template/timeline'
 
 		events:{
@@ -39,7 +40,7 @@ define [
 				offset = timecount*120
 				time   = moment().startOf('day').seconds(offset/secondsInPixel).format("HH:mm:ss")
 				times.unshift { time }
-			
+
 			times:times
 			width:@width
 
@@ -48,7 +49,7 @@ define [
 				@onSegmentAdd seg
 			@moveTimeBox()
 
-		moveTimeBox:-> 
+		moveTimeBox:->
 			d = new Date()
 			if app.globals.selectedDate.valueOf() < d.valueOf()
 				boxWidth = @width * ((d.getHours()*60*60 + d.getMinutes()*60+d.getSeconds())/(24*60*60))

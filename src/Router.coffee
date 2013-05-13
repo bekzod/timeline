@@ -20,17 +20,17 @@ define [
 
 	Router = Backbone.Router.extend
 
-		initialize:->		
+		initialize:->
 			app.globals = {}
 			app.globals.playerId = '517406256f81af0000000002'
-			app.globals.server   = ''
-			
+			app.globals.server   = 'http://altermedia.nodejitsu.com'
+
 			@segments = new SegmentCollection()
 			@contents = new ContentCollection()
 
 			app.useLayout('app/layout/index')
 			.setViews({
-				".timeline":new TimeLineView(collection:@segments)
+				".timeline"           : new TimeLineView(collection:@segments)
 				".segment_detail_view": new DetailView(collection:@segments)
 				".segment_table_view" : new TableView(collection:@segments)
 				".add_segment_view"   : new AddSegmentView(contents:@contents,segments:@segments)
@@ -40,7 +40,7 @@ define [
 		routes:
 			"": "index"
 			"date/:date":"dateSelected"
-			
+
 		index:->
 			@dateSelected()
 
@@ -50,12 +50,12 @@ define [
 			app.globals.selectedDate = date
 
 			@segments.fetch({
-				data:{	
+				data:{
 					fromDate:date.valueOf()
 					toDate:moment(date).add('day',1).valueOf();
 				}
 			})
-			
+
 			@segments.on 'add',(model)->console.log "modal added"
 
 			@navigate "date/"+date.format('YYYY-M-DD')
