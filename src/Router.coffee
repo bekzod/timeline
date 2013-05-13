@@ -41,8 +41,9 @@ define [
 
 		dateSelected:(date)->
       if !app.layout then return @index()
+
       date = moment(date)
-      if !date.isValid() then date = moment().startOf('day')
+      if !date.isValid() || date.isBefore(moment().startOf('day')) then date = moment().startOf('day')
       app.globals.selectedDate = date
 
       @segments.fetch(

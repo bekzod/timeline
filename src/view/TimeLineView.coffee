@@ -11,14 +11,13 @@ define [
 	ZOOM_AMOUNT   = 240
 
 	class TimeLineView extends Backbone.Layout
-		manage:true
 		template:'app/template/timeline'
 
 		events:{
-			'click #left'         : 'onLeft'
-			'click #right'        : 'onRight'
-			'click #zoomin'       : 'onZoomIn'
-			'click #zoomout'      : 'onZoomOut'
+			'click #left'    : 'onLeft'
+			'click #right'   : 'onRight'
+			'click #zoomin'  : 'onZoomIn'
+			'click #zoomout' : 'onZoomOut'
 		}
 
 		initialize:(opts)->
@@ -56,6 +55,8 @@ define [
 				@$el.find('.timebox').width boxWidth
 				clearTimeout(@timerId)
 				@timerId = setTimeout(_.bind(@moveTimeBox,@),500)
+			else
+				@$el.find('.timebox').width 0
 
 		onZoomOut:->
 			newWidth = @width - ZOOM_AMOUNT
