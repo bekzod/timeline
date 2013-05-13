@@ -44,15 +44,14 @@ require.config
 require [
   'App'
   'Router'
-  'view/TimeLineView'
-  'view/DetailView'
-  'collection/SegmentCollection'
   'layoutmanager'
-],(app,Router,TimeLineView,DetailView,SegmentCollection)->
+],(app,Router)->
   Backbone.Layout.configure({manage:false})
 
-
   app.globals = {}
+  app.globals.playerId = '517406256f81af0000000002'
+  app.globals.server   = 'http://altermedia.nodejitsu.com'
+
   app.router  = new Router();
 
   Backbone.history.start({ root: app.root });

@@ -21,10 +21,6 @@ define [
 	Router = Backbone.Router.extend
 
 		initialize:->
-			app.globals = {}
-			app.globals.playerId = '517406256f81af0000000002'
-			app.globals.server   = 'http://altermedia.nodejitsu.com'
-
 			@segments = new SegmentCollection()
 			@contents = new ContentCollection()
 
