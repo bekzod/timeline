@@ -37,7 +37,7 @@ require.config
 		jqueryuitouchpunch : "../components/jquery-ui-touch-punch/jquery.ui.touch-punch.min"
 		timepicker         : "../components/bootstrap-timepicker/js/bootstrap-timepicker.min"
 		bootstrap 		     : "../components/bootstrap/js/bootstrap.min"
-		backbonegrid       : "../components/backbone.datagrid/dist/backbone.datagrid"
+		backbonegrid       : "../components/backbone.datagrid/dist/backbone.datagrid.min"
 		backbonemodal 	   : "../components/backbone.bootstrap-modal/src/backbone.bootstrap-modal"
 
 
@@ -46,11 +46,26 @@ require [
   'Router'
   'layoutmanager'
 ],(app,Router)->
-  Backbone.Layout.configure({manage:false})
 
-  app.globals = {}
-  app.globals.playerId = '517406256f81af0000000002'
-  app.globals.server   = 'http://altermedia.nodejitsu.com'
+  JST = window.JST = window.JST || {};
+
+  Backbone.Layout.configure({
+    fetch:(path)->
+        path = path + ".html"
+        done = null
+        if !JST[path]
+          done = @async()
+          return $.ajax({ url: app.root + path }).then (contents)->
+            JST[path] = Handlebars.compile(contents)
+            JST[path].__compiled__ = true
+            done(JST[path])
+
+        if !JST[path].__compiled__
+          JST[path] = Handlebars.template(JST[path])
+          JST[path].__compiled__ = true
+
+        JST[path]
+  })
 
   app.router  = new Router();
 

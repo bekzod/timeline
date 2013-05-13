@@ -6,6 +6,7 @@ define [
 ],(app)->
 
 	class InfoPanelView extends Backbone.View
+		manage:true
 		template:"app/template/info_panel"
 
 		initialize:->
@@ -32,7 +33,7 @@ define [
 			clearTimeout(@timerid)
 
 		onTick:=>
-			if @started			
+			if @started
 				clearTimeout(@timerid)
 				@timerid = setTimeout(@onTick,1000)
 			@render()
