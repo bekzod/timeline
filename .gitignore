@@ -4,3 +4,4 @@ images/
 .DS_Store
 *.sublime-project
 *.sublime-workspace./lib
+node_modules
