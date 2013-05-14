@@ -36,7 +36,7 @@ require.config
 		layoutmanager      : "../components/layoutmanager/backbone.layoutmanager"
 		jqueryuitouchpunch : "../components/jquery-ui-touch-punch/jquery.ui.touch-punch.min"
 		timepicker         : "../components/bootstrap-timepicker/js/bootstrap-timepicker.min"
-		bootstrap 		     : "../components/bootstrap/js/bootstrap.min"
+		bootstrap 		     : "../components/bootstrap/docs/assets/js/bootstrap.min"
 		backbonegrid       : "../components/backbone.datagrid/dist/backbone.datagrid.min"
 		backbonemodal 	   : "../components/backbone.bootstrap-modal/src/backbone.bootstrap-modal"
 

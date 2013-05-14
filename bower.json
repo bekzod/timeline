@@ -8,7 +8,13 @@
     "moment": "~2.0.0",
     "backbone": "~1.0.0",
     "requirejs": "~2.1.5",
-    "socket.io-client": "~0.9.11"
+    "socket.io-client": "~0.9.11",
+    "layoutmanager": "~0.8.7",
+    "handlebars": "./components/handlebars",
+    "bootstrap-timepicker": "~0.2.3",
+    "backbone.datagrid": "~0.3.2",
+    "jquery-ui-touch-punch": "latest",
+    "bootstrap": "2.3.*"
   },
   "ignore": [
     "**/.*",
