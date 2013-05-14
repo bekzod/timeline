@@ -2,16 +2,15 @@ define [
 	'backbone'
 	'moment'
 ],()->
-	
+
 	class Segment extends Backbone.Model
 		idAttribute: "_id"
 
-		getColor:->
-			'#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
-		
+
 		initialize: ->
 			Backbone.Model.prototype.initialize.apply(@, arguments)
 			@mark_to_revert()
+			@color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
 
 		defaults:
 			playDuration:600000
@@ -30,7 +29,7 @@ define [
 				success(self, resp) if (success)
 			@trigger("save", this)
 			Backbone.Model.prototype.save.call(this, attrs, options)
-		
+
 		hasBeenModifed:()->
 			if @isNew() then return true
 			_.find @attributes,(value,key)=>

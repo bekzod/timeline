@@ -1,5 +1,5 @@
 define [
-	'App'
+	'app'
   'backbonegrid'
 	'backbonemodal'
 ],(app)->
@@ -13,6 +13,13 @@ define [
 		}
 
 		onClick:(e)->
+			@segments.fetch(
+					success:=>
+						console.log 'success'
+						@contentGrid.refresh()
+			)
+
+
 			@modal = new Backbone.BootstrapModal(
 				title      : "Select Media To Play"
 				content    : @contentGrid
@@ -65,8 +72,8 @@ define [
 							type: Backbone.Datagrid.ActionCell
 							label: 'Select'
 							actionClassName: 'btn btn-primary'
-							action:(model)->
-								self.onModelSelect(model)
+							action:(model)=>
+								@onModelSelect(model)
 								false
 					}
 				]

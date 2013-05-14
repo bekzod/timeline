@@ -28,9 +28,9 @@ require.config
 	paths:
 		moment             : "../components/moment/moment"
 		handlebars         : "../components/handlebars/handlebars"
-		backbone           : "../components/backbone/backbone"
-		underscore         : "../components/underscore/underscore"
-		jquery             : "../components/jquery/jquery"
+		backbone           : "../components/backbone/backbone-min"
+		underscore         : "../components/underscore/underscore-min"
+		jquery             : "../components/jquery/jquery.min"
 		socketio           : "../components/socket.io-client/lib/socket.io-client"
 		jqueryui           : "../components/jquery-ui/ui/minified/jquery-ui.min"
 		layoutmanager      : "../components/layoutmanager/backbone.layoutmanager"
@@ -39,7 +39,6 @@ require.config
 		bootstrap 		     : "../components/bootstrap/js/bootstrap.min"
 		backbonegrid       : "../components/backbone.datagrid/dist/backbone.datagrid.min"
 		backbonemodal 	   : "../components/backbone.bootstrap-modal/src/backbone.bootstrap-modal"
-
 
 require [
   'App'

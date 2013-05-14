@@ -84,7 +84,6 @@ define [
 			@render()
 			@$el.find('.timeline_container').scrollLeft(-@width*ratio)
 
-
 		onSegmentAdd:(model)->
 			seg = new SegmentView( model:model)
 			@insertView '.timeline_segment_container',seg

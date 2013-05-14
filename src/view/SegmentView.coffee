@@ -1,5 +1,5 @@
 define [
-	'App'
+	'app'
 	'backbone'
 	'layoutmanager'
 	'jqueryui'
@@ -25,7 +25,7 @@ define [
 			@model.on 'destroy',@remove,@
 
 		serialize:()->
-			{color:@model.getColor()}
+			{color:@model.color}
 
 		getOffset:()->
 			startTime = new Date @model.get 'startDate'
