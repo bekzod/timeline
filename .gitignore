@@ -4,3 +4,5 @@ images/
 *.sublime-project
 *.sublime-workspace./lib
 node_modules
+src/**/*.js
+
