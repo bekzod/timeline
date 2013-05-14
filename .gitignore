@@ -1,6 +1,5 @@
 components/
 images/
-*.js
 .DS_Store
 *.sublime-project
 *.sublime-workspace./lib
