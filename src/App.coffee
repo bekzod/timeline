@@ -6,14 +6,14 @@ define [
 ],(Router)->
 
 
-	App = {
+	app = {
 		root: "/"
 		globals:
 			playerId : '517406256f81af0000000002'
 			server   : 'http://altermedia.nodejitsu.com'
 		}
 
-	_.extend(App,{
+	_.extend(app,{
 		init:->
 			@router = new Router()
 			Backbone.history.start({ root: @root })
