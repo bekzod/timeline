@@ -1,10 +1,10 @@
 define [
-	'app'
+	'../App'
 	'../model/Segment'
 	'backbone'
 ],(app,Segment)->
 	class SegmentCollection extends Backbone.Collection
-		url:(name)->
+		url:->
 			[
 				app.globals.server
 				'/player/segment/'
@@ -14,6 +14,7 @@ define [
 		model:Segment
 
 		initialize:->
+			console.log app
 			@on 'change:selected',@onSelectedChange,@
 			@on 'remove',@onDestroy,@
 			@on 'add',@onAdd,@

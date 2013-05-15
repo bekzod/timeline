@@ -26,22 +26,22 @@ require.config
 
 
 	paths:
-		moment             : "../components/moment/moment"
-		handlebars         : "../components/handlebars/handlebars"
-		backbone           : "../components/backbone/backbone-min"
-		underscore         : "../components/underscore/underscore-min"
-		jquery             : "../components/jquery/jquery.min"
-		socketio           : "../components/socket.io-client/lib/socket.io-client"
-		jqueryui           : "../components/jquery-ui/ui/minified/jquery-ui.min"
-		layoutmanager      : "../components/layoutmanager/backbone.layoutmanager"
-		jqueryuitouchpunch : "../components/jquery-ui-touch-punch/jquery.ui.touch-punch.min"
-		timepicker         : "../components/bootstrap-timepicker/js/bootstrap-timepicker.min"
-		bootstrap 		     : "../components/bootstrap/docs/assets/js/bootstrap.min"
-		backbonegrid       : "../components/backbone.datagrid/dist/backbone.datagrid.min"
-		backbonemodal 	   : "../components/backbone.bootstrap-modal/src/backbone.bootstrap-modal"
+		moment             : "http://altermedia.s3-eu-west-1.amazonaws.com/components/moment/moment"
+		handlebars         : "http://altermedia.s3-eu-west-1.amazonaws.com/components/handlebars/handlebars"
+		backbone           : "http://altermedia.s3-eu-west-1.amazonaws.com/components/backbone/backbone-min"
+		underscore         : "http://altermedia.s3-eu-west-1.amazonaws.com/components/underscore/underscore-min"
+		jquery             : "http://altermedia.s3-eu-west-1.amazonaws.com/components/jquery/jquery.min"
+		socketio           : "http://altermedia.s3-eu-west-1.amazonaws.com/components/socket.io-client/lib/socket.io-client"
+		jqueryui           : "http://altermedia.s3-eu-west-1.amazonaws.com/components/jquery-ui/ui/minified/jquery-ui.min"
+		layoutmanager      : "http://altermedia.s3-eu-west-1.amazonaws.com/components/layoutmanager/backbone.layoutmanager"
+		jqueryuitouchpunch : "http://altermedia.s3-eu-west-1.amazonaws.com/components/jquery-ui-touch-punch/jquery.ui.touch-punch.min"
+		timepicker         : "http://altermedia.s3-eu-west-1.amazonaws.com/components/bootstrap-timepicker/js/bootstrap-timepicker.min"
+		bootstrap 		     : "http://altermedia.s3-eu-west-1.amazonaws.com/components/bootstrap/docs/assets/js/bootstrap.min"
+		backbonegrid       : "http://altermedia.s3-eu-west-1.amazonaws.com/components/backbone.datagrid/dist/backbone.datagrid.min"
+		backbonemodal 	   : "http://altermedia.s3-eu-west-1.amazonaws.com/components/backbone.bootstrap-modal/src/backbone.bootstrap-modal"
 
 require [
-  'App'
+  'app'
   'layoutmanager'
 ],(app)->
 

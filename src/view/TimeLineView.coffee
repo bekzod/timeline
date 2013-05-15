@@ -1,5 +1,5 @@
 define [
-	'app'
+	'../App'
 	'./SegmentView'
 	'moment'
 ],(app,SegmentView)->

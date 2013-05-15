@@ -1,5 +1,5 @@
 define [
-	'app'
+	'../App'
   'backbonegrid'
 	'backbonemodal'
 ],(app)->

@@ -1,5 +1,5 @@
 define [
-  'app'
+  './App'
   './collection/SegmentCollection'
   './collection/ContentCollection'
   './view/TimeLineView'

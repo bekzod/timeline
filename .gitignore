@@ -1,8 +1,7 @@
 components/
-images/
 .DS_Store
 *.sublime-project
-*.sublime-workspace./lib
+*.sublime-workspace.
 node_modules
 src/**/*.js
 
