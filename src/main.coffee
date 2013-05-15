@@ -41,7 +41,7 @@ require.config
 		backbonemodal 	   : "http://altermedia.s3-eu-west-1.amazonaws.com/components/backbone.bootstrap-modal/src/backbone.bootstrap-modal"
 
 require [
-  'app'
+  './App'
   'layoutmanager'
 ],(app)->
 

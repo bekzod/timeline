@@ -1,5 +1,5 @@
 define [
-	'../App'
+	'../app'
 	'./SegmentView'
 	'moment'
 ],(app,SegmentView)->
@@ -21,6 +21,7 @@ define [
 		}
 
 		initialize:(opts)->
+			console.log app
 			@width = INTIAL_AMOUNT
 			app.globals.TIMELINE_WIDTH = @width
 			@collection.on 'add',@onSegmentAdd,@

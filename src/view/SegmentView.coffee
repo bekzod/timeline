@@ -1,5 +1,5 @@
 define [
-	'app'
+	'../app'
 	'backbone'
 	'layoutmanager'
 	'jqueryui'

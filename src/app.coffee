@@ -1,22 +1,22 @@
 define [
-	'Router'
+	"Router"
 	"backbone"
 	"handlebars"
 	"layoutmanager"
 ],(Router)->
 
 
-	app = {
+	App = {
 		root: "/"
 		globals:
 			playerId : '517406256f81af0000000002'
 			server   : 'http://altermedia.nodejitsu.com'
 		}
 
-	_.extend(app,{
+	_.extend(App,{
 		init:->
-			app.router = new Router()
-			Backbone.history.start({ root: app.root })
+			@router = new Router()
+			Backbone.history.start({ root: @root })
 
 		module: (additionalProps)->
 			_.extend({ Views: {} }, additionalProps)

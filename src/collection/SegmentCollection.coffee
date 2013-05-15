@@ -1,5 +1,5 @@
 define [
-	'../App'
+	'../app'
 	'../model/Segment'
 	'backbone'
 ],(app,Segment)->
@@ -14,7 +14,6 @@ define [
 		model:Segment
 
 		initialize:->
-			console.log app
 			@on 'change:selected',@onSelectedChange,@
 			@on 'remove',@onDestroy,@
 			@on 'add',@onAdd,@
