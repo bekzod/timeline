@@ -1,19 +1,14 @@
 define [
-	"Router"
 	"backbone"
 	"handlebars"
 	"layoutmanager"
-],(Router)->
-
-
-	app = {
+],()->
+	app = _.extend({
 		root: "/"
 		globals:
 			playerId : '517406256f81af0000000002'
 			server   : 'http://altermedia.nodejitsu.com'
-		}
 
-	_.extend(app,{
 		module: (additionalProps)->
 			_.extend({ Views: {} }, additionalProps)
 
@@ -33,7 +28,6 @@ define [
 			layout.render()
 			@layout = layout
 			layout
-
-	},Backbone.Events)
+		},Backbone.Events)
 
 

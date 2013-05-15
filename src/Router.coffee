@@ -1,5 +1,5 @@
 define [
-  './App'
+  './app'
   './collection/SegmentCollection'
   './collection/ContentCollection'
   './view/TimeLineView'
@@ -17,10 +17,10 @@ define [
     e = Math.floor(Math.log(bytes) / Math.log(1024))
     (bytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e]
 
-
   Router = Backbone.Router.extend
 
     initialize:(opts)->
+      console.log app
       @segments = new SegmentCollection()
       @contents = new ContentCollection()
 
