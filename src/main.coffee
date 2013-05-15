@@ -41,9 +41,10 @@ require.config
 		backbonemodal 	   : "http://altermedia.s3-eu-west-1.amazonaws.com/components/backbone.bootstrap-modal/src/backbone.bootstrap-modal"
 
 require [
-  './App'
+  'app'
+  'Router'
   'layoutmanager'
-],(app)->
+],(app,Router)->
 
   JST = window.JST = window.JST || {};
 
@@ -73,6 +74,8 @@ require [
       evt.preventDefault()
       Backbone.history.navigate(href.attr, true)
 
-  app.init()
+  new Router()
+  Backbone.history.start(root:app.root)
+
 
 

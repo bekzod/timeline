@@ -1,5 +1,5 @@
 define [
-  'app'
+  './App'
   './collection/SegmentCollection'
   './collection/ContentCollection'
   './view/TimeLineView'
@@ -12,23 +12,23 @@ define [
 ],(app,SegmentCollection,ContentCollection,TimeLineView,DetailView,TableView,AddSegmentView,InfoPanelView)->
 
 
-	readablizeBytes = (bytes)->
-	  s = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
-	  e = Math.floor(Math.log(bytes) / Math.log(1024))
-	  (bytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e]
+  readablizeBytes = (bytes)->
+    s = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
+    e = Math.floor(Math.log(bytes) / Math.log(1024))
+    (bytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e]
 
 
-	Router = Backbone.Router.extend
+  Router = Backbone.Router.extend
 
-		initialize:->
-			@segments = new SegmentCollection()
-			@contents = new ContentCollection()
+    initialize:(opts)->
+      @segments = new SegmentCollection()
+      @contents = new ContentCollection()
 
-		routes:
-			"": "index"
-			"date/:date":"dateSelected"
+    routes:
+      "": "index"
+      "date/:date":"dateSelected"
 
-		index:->
+    index:->
       app.useLayout('app/layout/index')
       .setViews({
         ".timeline"           : new TimeLineView(collection:@segments)
@@ -39,7 +39,7 @@ define [
       })
       @dateSelected()
 
-		dateSelected:(date)->
+    dateSelected:(date)->
       if !app.layout then return @index()
 
       date = moment(date)

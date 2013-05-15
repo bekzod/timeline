@@ -14,10 +14,6 @@ define [
 		}
 
 	_.extend(app,{
-		init:->
-			@router = new Router()
-			Backbone.history.start({ root: @root })
-
 		module: (additionalProps)->
 			_.extend({ Views: {} }, additionalProps)
 

@@ -1,5 +1,5 @@
 define [
-	'../app'
+	'../App'
 	'./SegmentView'
 	'moment'
 ],(app,SegmentView)->
@@ -21,14 +21,12 @@ define [
 		}
 
 		initialize:(opts)->
-			console.log app
 			@width = INTIAL_AMOUNT
 			app.globals.TIMELINE_WIDTH = @width
 			@collection.on 'add',@onSegmentAdd,@
 			@collection.on 'reset',@onCollectionReset,@
 
 		onCollectionReset:->
-			console.log "reset"
 			@render()
 
 		serialize:->
@@ -51,7 +49,7 @@ define [
 
 		moveTimeBox:->
 			d = new Date()
-			if app.globals.selectedDate.valueOf() < d.valueOf()
+			if app.globals.selectedDate && app.globals.selectedDate.valueOf() < d.valueOf()
 				boxWidth = @width * ((d.getHours()*60*60 + d.getMinutes()*60+d.getSeconds())/(24*60*60))
 				@$el.find('.timebox').width boxWidth
 				clearTimeout(@timerId)
