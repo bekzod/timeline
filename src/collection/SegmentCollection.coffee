@@ -1,5 +1,5 @@
 define [
-	'../App'
+	'../app'
 	'../model/Segment'
 	'backbone'
 ],(app,Segment)->
