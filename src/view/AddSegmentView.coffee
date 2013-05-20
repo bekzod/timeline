@@ -19,7 +19,6 @@ define [
 						@contentGrid.refresh()
 			)
 
-
 			@modal = new Backbone.BootstrapModal(
 				title      : "Select Media To Play"
 				content    : @contentGrid
@@ -38,9 +37,11 @@ define [
 				startDate = app.globals.selectedDate.valueOf()
 			else
 				startDate = Date.now()+1000*60*10
+
 			@segments.add({
 				startDate
 				content:contentModel.id
+				playDuration:contentModel.get('duration')
 				contentModel:contentModel
 				selected:true
 			})

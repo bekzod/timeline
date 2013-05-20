@@ -4,20 +4,21 @@ define [
 	'moment'
 ],(app,SegmentView)->
 
-	MAX_ZOOM = 11520
+	MAX_ZOOM = 29380
 	MIN_ZOOM = 1440
 
-	INTIAL_AMOUNT = 1440
-	ZOOM_AMOUNT   = 240
+	INTIAL_AMOUNT = 5540
+	ZOOM_AMOUNT   = 1060
 
 	class TimeLineView extends Backbone.Layout
 		template:'app/template/timeline'
 
 		events:{
-			'click #left'    : 'onLeft'
-			'click #right'   : 'onRight'
-			'click #zoomin'  : 'onZoomIn'
-			'click #zoomout' : 'onZoomOut'
+			'click #left'         : 'onLeft'
+			'click #right'        : 'onRight'
+			'click #zoomin'       : 'onZoomIn'
+			'click #zoomout'      : 'onZoomOut'
+			'click #showtimeline' : 'onShowTimeLine'
 		}
 
 		initialize:(opts)->
@@ -67,21 +68,37 @@ define [
 
 		onLeft:->
 			cont = @$el.find('.timeline_container')
-			newScrollValue = cont.scrollLeft()-80
+			newScrollValue = cont.scrollLeft() - @width*.05
 			cont.clearQueue().animate(scrollLeft:newScrollValue)
 
 		onRight:->
 			cont = @$el.find('.timeline_container')
-			newScrollValue = cont.scrollLeft()+80
+			newScrollValue = cont.scrollLeft() + @width*.05
 			cont.clearQueue().animate(scrollLeft:newScrollValue)
 
-		setNewWidth:(newWidth)->
+		setNewWidth:(newWidth)=>
 			if newWidth < MIN_ZOOM || newWidth > MAX_ZOOM then return
-			ratio = @$el.find('.timeline_background').position().left/@width
+			ratio  = @$el.find('.timeline_background').position().left/@width
+
+			oldcont = @$el.find('.timeline_container')
+			loc     = oldcont.offset()
+			scroll  = oldcont.scrollLeft()
+			cloned  = oldcont.clone()
+			.css(position:'absolute',width:@$el.width(),"z-index":100)
+			.offset(loc).appendTo(@$el.parent())
+			.scrollLeft(scroll)
+
 			@width = newWidth
-			app.globals.TIMELINE_WIDTH = @width
+			app.globals.TIMELINE_WIDTH = newWidth
+
 			@render()
+			cloned.fadeOut(500,'easeOutBack',->$(@).remove())
 			@$el.find('.timeline_container').scrollLeft(-@width*ratio)
+
+		onShowTimeLine:->
+			timeWidth = @$el.find('.timebox').width() - 100
+			@$el.find('.timeline_container').clearQueue().animate(scrollLeft:timeWidth)
+
 
 		onSegmentAdd:(model)->
 			seg = new SegmentView( model:model)
