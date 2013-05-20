@@ -15,6 +15,8 @@ define [
 			'click #save':'onSaveClick'
 		}
 
+		serialize:->model:@model?.toJSON()
+
 		onDeleteClick:(e)->
 			e.preventDefault()
 			e.stopImmediatePropagation()

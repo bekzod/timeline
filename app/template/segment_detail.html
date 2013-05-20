@@ -1,31 +1,33 @@
-<form>
+  <legend>Segment Details</legend>
 
-  <fieldset>
-    <legend>Segment Details</legend>
+  <div class="span2">
+      <label>Start Time</label>
+        <div class="bootstrap-timepicker input-append">
+        <input id="startDate" class="input-small" type="text">
+        <span class="add-on"><i class="icon-time"></i></span>
+      </div>
 
-   	<label>Start Time</label>
-    <div class="bootstrap-timepicker input-append">
-		<input id="startDate" class="input-small" type="text">
-		<span class="add-on"><i class="icon-time"></i></span>
-	</div>
+      <label>Play Duration</label>
+      <div class="bootstrap-timepicker input-append">
+        <input id="playDuration" class="input-small" type="text">
+        <span class="add-on"><i class="icon-time"></i></span>
+      </div>
 
-   	<label>Play Duration</label>
-	<div class="bootstrap-timepicker input-append">
-		<input id="playDuration" class="input-small" type="text">
-		<span class="add-on"><i class="icon-time"></i></span>
-	</div>
+      <label>Start Offset</label>
+      <div class="bootstrap-timepicker input-append">
+        <input id="startOffset" class="input-small" type="text">
+        <span class="add-on"><i class="icon-time"></i></span>
+      </div>
+  </div>
 
-	<label>Start Offset</label>
-	<div class="bootstrap-timepicker input-append">
-		<input id="startOffset" class="input-small" type="text">
-		<span class="add-on"><i class="icon-time"></i></span>
-	</div>
+  <div class="span3">
+    {{#if model}}
+        {{model.contentId}}
+    {{/if}}
+  </div>
 
-  </fieldset>
-	<div>
-		<a id='save'   class="btn disabled">Save</a>
-		<a id='reset'  class="btn disabled">Reset</a>
-		<a id='delete' class="btn btn-danger disabled">Delete</a>
-	</div>
-
-</form>
+  <div class='span6 text-center'>
+    <a id='save'   class="btn disabled">Save</a>
+    <a id='reset'  class="btn disabled">Reset</a>
+    <a id='delete' class="btn btn-danger disabled">Delete</a>
+  </div>

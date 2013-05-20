@@ -99,7 +99,6 @@ define [
 			timeWidth = @$el.find('.timebox').width() - 100
 			@$el.find('.timeline_container').clearQueue().animate(scrollLeft:timeWidth)
 
-
 		onSegmentAdd:(model)->
 			seg = new SegmentView( model:model)
 			@insertView '.timeline_segment_container',seg

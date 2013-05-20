@@ -16,15 +16,15 @@ define [
 		}
 
 		onMousedown:(e)->
-			e.preventDefault()
 			@model.set('selected',true)
+			false
 
 		initialize:->
 			@model.on 'reset',@render,@
 			@model.on 'change:startDate change:playDuration',@afterRender,@
 			@model.on 'destroy',@remove,@
 
-		serialize:()->
+		serialize:->
 			{color:@model.color}
 
 		getOffset:()->

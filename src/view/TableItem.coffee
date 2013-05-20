@@ -7,14 +7,13 @@ define [
 		manage:true
 		template:'app/template/table_item'
 		el:false
-		events:{
+		events:
 			click:'onClick'
-		}
 
 		onClick:(e)->
-			e.preventDefault();
-			e.stopImmediatePropagation();
 			@model.set('selected',true);
+			@afterRender()
+			false
 
 		initialize:->
 			@model.on 'change save:success',@render,@
@@ -25,7 +24,7 @@ define [
 			id = id && id.substr(id.length-2);
 			startTime = moment(@model.get('startDate')).format('HH:mm:ss')
 			isSaved = !@model.hasBeenModifed()
-			console.log @model.toJSON();
+
 			{
 				id
 				startTime

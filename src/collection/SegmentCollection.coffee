@@ -25,7 +25,7 @@ define [
 		onAdd:(model)->
 			@onSelectedChange(model)
 
-		onSelectedChange:(seg)->
+		onSelectedChange:(seg)=>
 			if seg && !seg.get('selected') then return
 			if seg == @currentSegment then return
 			if @currentSegment
