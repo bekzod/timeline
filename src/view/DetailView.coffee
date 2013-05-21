@@ -6,6 +6,11 @@ define [
 	'moment'
 ],(app)->
 
+	readablizeBytes = (bytes)->
+      s = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
+      e = Math.floor(Math.log(bytes) / Math.log(1024));
+      (bytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e]
+
 	class DetailView extends Backbone.View
 		manage:true
 		template:"app/template/segment_detail"
@@ -18,7 +23,10 @@ define [
 			j = null
 			if @model
 				j = @model.toJSON()
-				if j.contentModel then j.contentModel = j.contentModel.toJSON()
+				if j.contentModel
+					j.contentModel = j.contentModel.toJSON()
+					j.contentModel.size = readablizeBytes(j.contentModel.size)
+					j.contentModel.duration = j.contentModel.duration/1000
 			model:j
 
 		onDeleteClick:(e)->
