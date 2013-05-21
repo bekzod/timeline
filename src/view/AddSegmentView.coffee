@@ -13,11 +13,7 @@ define [
 		}
 
 		onClick:(e)->
-			@segments.fetch(
-					success:=>
-						console.log 'success'
-						@contentGrid.refresh()
-			)
+			@segments.fetch(success:=>@contentGrid.refresh())
 
 			@modal = new Backbone.BootstrapModal(
 				title      : "Select Media To Play"

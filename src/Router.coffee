@@ -7,9 +7,10 @@ define [
   './view/TableView'
   './view/AddSegmentView'
   './view/InfoPanelView'
+  './model/Content'
   'moment'
   'layoutmanager'
-],(app,SegmentCollection,ContentCollection,TimeLineView,DetailView,TableView,AddSegmentView,InfoPanelView)->
+],(app,SegmentCollection,ContentCollection,TimeLineView,DetailView,TableView,AddSegmentView,InfoPanelView,Content)->
 
 
   readablizeBytes = (bytes)->
@@ -38,6 +39,8 @@ define [
         ".info_panel"         : new InfoPanelView(collection:@segments)
       })
       @dateSelected()
+      cont = new Content(id:'b8fabdbb3ba2f617b6254223')
+      cont.fetch().success(->console.log "success",cont.get('duration'))
 
     dateSelected:(date)->
       if !app.layout then return @index()

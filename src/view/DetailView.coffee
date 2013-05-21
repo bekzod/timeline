@@ -9,32 +9,32 @@ define [
 	class DetailView extends Backbone.View
 		manage:true
 		template:"app/template/segment_detail"
-		events:{
+		events:
 			'click #delete':'onDeleteClick'
 			'click #reset':'onResetClick'
 			'click #save':'onSaveClick'
-		}
 
-		serialize:->model:@model?.toJSON()
+		serialize:->
+			j = null
+			if @model
+				j = @model.toJSON()
+				if j.contentModel then j.contentModel = j.contentModel.toJSON()
+			model:j
 
 		onDeleteClick:(e)->
-			e.preventDefault()
-			e.stopImmediatePropagation()
 			if $(e.target).hasClass('disabled') then return
 			if @model then @model.destroy()
+			false
 
 		onSaveClick:(e)->
-			e.preventDefault()
-			e.stopImmediatePropagation()
 			if $(e.target).hasClass('disabled') then return
 			if @model then @model.save()
+			false
 
 		onResetClick:(e)->
-			e.preventDefault()
-			e.stopImmediatePropagation()
 			if $(e.target).hasClass('disabled') then return
 			if @model then @model.revert()
-
+			false
 
 		initialize:->
 			@collection.on 'segmentSelected',@setNewModel,@
@@ -48,7 +48,7 @@ define [
 			if model
 				@model = model
 				@model.on 'change:startDate change:playDuration change:startOffset',@afterRender,@
-			@afterRender()
+			@render()
 
 		afterRender:->
 			startDate     = "00:00:00"

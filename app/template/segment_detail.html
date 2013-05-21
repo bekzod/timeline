@@ -22,7 +22,10 @@
 
   <div class="span3">
     {{#if model}}
-        {{model.contentId}}
+        <p>Content name: {{model.contentModel.description.name}}</p>
+        <p>Content size: {{model.contentModel.size}}</p>
+        <p>Content duration: {{model.contentModel.duration}}</p>
+        <p>Content type: {{model.contentModel.type}}</p>
     {{/if}}
   </div>
 

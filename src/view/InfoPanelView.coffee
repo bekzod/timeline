@@ -13,15 +13,21 @@ define [
 			@startTimer();
 
 		serialize:->
-			{
-				time:moment().format(" HH : mm : ss")
-				segment:@getCurrentSegment()
-			}
+			seg = @getCurrentSegment()
+			obj = {time:moment().format(" HH : mm : ss")}
+			if seg
+				endDate = seg.get('startDate')+seg.get('playDuration')
+				obj.segmentId = seg.id
+				obj.endsIn = moment(endDate - Date.now()).format(" HH : mm : ss");
+				obj.endDate = moment(endDate).format(" HH : mm : ss")
+				obj.startDate = moment(seg.get('startDate')).format(" HH : mm : ss")
+			obj
+
 
 		getCurrentSegment:()->
 			now = Date.now()
-			seg = @collection.find (each)-> each.get('startDate') < now && each.get('endDate') > now
-			if seg then seg.get('id') else 'none'
+			@collection.find (each)-> each.get('startDate') < now && each.get('endDate') > now
+
 
 		startTimer:->
 			if @started then return

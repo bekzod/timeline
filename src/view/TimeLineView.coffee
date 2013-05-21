@@ -4,22 +4,21 @@ define [
 	'moment'
 ],(app,SegmentView)->
 
-	MAX_ZOOM = 29380
+	MAX_ZOOM = 34680
 	MIN_ZOOM = 1440
 
-	INTIAL_AMOUNT = 5540
+	INTIAL_AMOUNT = 7660
 	ZOOM_AMOUNT   = 1060
 
 	class TimeLineView extends Backbone.Layout
 		template:'app/template/timeline'
 
-		events:{
+		events:
 			'click #left'         : 'onLeft'
 			'click #right'        : 'onRight'
 			'click #zoomin'       : 'onZoomIn'
 			'click #zoomout'      : 'onZoomOut'
 			'click #showtimeline' : 'onShowTimeLine'
-		}
 
 		initialize:(opts)->
 			@width = INTIAL_AMOUNT
